@@ -1,14 +1,31 @@
 html, body {
     margin: 0;
     height: 100%;
+    background-color: #282c34 !important;
 }
 
-#sidebar {
-    grid-area: sidebar;
-    overflow-y: scroll;
+.sidebar {
+    background-color: #21252b !important;
+    color: white;
 }
 
-#content {
+.left-border {
+    border-left: 2px solid #333841 !important;
+}
+
+.top-border {
+    border-top: 2px solid #333841 !important;
+}
+
+.right-border {
+    border-right: 2px solid #333841 !important;
+}
+
+.bottom-border {
+    border-bottom: 2px solid #333841 !important;
+}
+
+.content {
     grid-area: content;
 }
 
@@ -24,7 +41,7 @@ html, body {
 .sideBarItem {
     max-height: 50px;
     max-width: 50px;
-    padding: 5px;
+    margin: 12px;
 }
 
 .sideBarItem img {
@@ -35,7 +52,6 @@ html, body {
 .colourPalette {
     grid-area: colourP;
     display: flex;
-    flex-direction: grid;
     flex-flow: wrap;
 }
 

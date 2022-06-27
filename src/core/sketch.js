@@ -3,14 +3,16 @@
 let toolbox = null;
 let colourP = null;
 let helpers = null;
+let isSetup = false;
 
 
-function setup() {
+function setup(backgroundColor, canvasWidth, canvasHeight) {
+    if (backgroundColor === undefined || canvasWidth === undefined || canvasHeight === undefined) return;
 
-    //create a canvas to fill the content div from index.html
-    let canvasContainer = select('#content');
-    const c = createCanvas(canvasContainer.width, canvasContainer.height);
-    c.parent("content");
+    let effectiveBackgroundColor = backgroundColor;
+
+    const c = createCanvas(canvasWidth, canvasHeight);
+    c.parent("sketchCanvas");
 
     //create helper functions and the colour palette
     helpers = new HelperFunctions();
@@ -24,11 +26,13 @@ function setup() {
     toolbox.addTool(new LineToTool());
     toolbox.addTool(new SprayCanTool());
     toolbox.addTool(new MirrorDrawTool());
-    background(255);
+    isSetup = true;
 
+    background(effectiveBackgroundColor);
 }
 
 function draw() {
+    if (!isSetup) return;
     //call the draw function from the selected tool.
     //hasOwnProperty is a javascript function that tests
     //if an object contains a particular method or property

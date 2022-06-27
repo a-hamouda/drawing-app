@@ -3,32 +3,140 @@
 <head>
     <!-- Styles -->
     <link rel="stylesheet" type="text/css" href="style.css">
+    <link href="lib/bootstrap/bootstrap.min.css" rel="stylesheet" type="text/css">
 
     <!-- 3rd party -->
     <script src="lib/p5.min.js"></script>
+    <script src="lib/bootstrap/bootstrap.bundle.min.js"></script>
+    <script src="lib/jquery/jquery-3.6.0.min.js"></script>
 
     <!-- Custom scripts -->
-    <script src="sketch.js"></script>
-    <script src="toolbox.js"></script>
-    <script src="colourPalette.js"></script>
-    <script src="helperFunctions.js"></script>
-    <script src="freehandTool.js"></script>
-    <script src="lineToTool.js"></script>
-    <script src="sprayCanTool.js"></script>
-    <script src="mirrorDrawTool.js"></script>
+    <script src="src/main.js"></script>
+    <script src="src/core/sketch_configuration.js"></script>
+    <script src="src/core/sketch.js"></script>
+    <script src="src/core/toolbox.js"></script>
+    <script src="src/tools/colourPalette.js"></script>
+    <script src="src/helpers/helperFunctions.js"></script>
+    <script src="src/helpers/nav_bar.js"></script>
+    <script src="src/tools/freehandTool.js"></script>
+    <script src="src/tools/lineToTool.js"></script>
+    <script src="src/tools/sprayCanTool.js"></script>
+    <script src="src/tools/mirrorDrawTool.js"></script>
     <title>Drawing app</title>
 </head>
 <body>
-<div class="wrapper">
-    <div class="box header">My Drawing App
+<!-- Sketch setup popup-->
+<div class="modal fade" id="setupPopup" tabindex="-1" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Create a new sketch</h3>
+            </div>
+            <div class="modal-body">
+                <!-- Setup form -->
+                <form>
+                    <div class="mb-3">
+                        <!-- Sketch name field -->
+                        <div class="mb-3">
+                            <label for="sketchName" class="form-label">Sketch name</label>
+                            <input type="text" class="form-control" id="sketchName">
+                        </div>
+                        <!-- Sketch size fields -->
+                        <fieldset class="form-group border rounded-1 p-3">
+                            <legend class="float-none w-auto ps-2 pe-2">Canvas</legend>
+                            <div class="row">
+                                <div class="col">
+                                    <div class="mb-3">
+                                        <label for="canvasWidth" class="form-label">Width</label>
+                                        <div class="input-group flex-nowrap">
+                                            <input id="canvasWidth" type="text" class="form-control">
+                                            <span class="input-group-text">px</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="mb-3">
+                                        <label for="canvasHeight" class="form-label">Height</label>
+                                        <div class="input-group flex-nowrap">
+                                            <input id="canvasHeight" type="text" class="form-control">
+                                            <span class="input-group-text">px</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
-        <button id="clearButton">Clear</button>
-        <button id="saveImageButton">Save Image</button>
+                            <!-- Background color picker -->
+                            <div class="row">
+                                <div class="col">
+                                    <div class="dropdown">
+                                        <a class="btn btn-outline-secondary dropdown-toggle w-100" href="#"
+                                           role="button"
+                                           data-bs-toggle="dropdown" aria-expanded="false">
+                                            Select background color
+                                        </a>
+
+                                        <ul id="colorsList" class="dropdown-menu w-100 text-center"
+                                            aria-labelledby="dropdownMenuLink">
+                                        </ul>
+                                    </div>
+                                </div>
+                                <!-- Background color viewer -->
+                                <div class="col col-2">
+                                    <div id="canvasColor" class="input-group-text h-100"></div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer" style="border: 0;">
+                <button id="startDrawing" type="button" class="btn btn-primary">Start drawing</button>
+            </div>
+        </div>
     </div>
-    <div class="box" id="sidebar"></div>
-    <div id="content"></div>
-    <div class="box colourPalette"></div>
-    <div class="box options"></div>
+</div>
+
+<!-- App interface -->
+<div id="appInterface" style="display: none">
+    <!-- Top bar -->
+    <nav class="navbar navbar-dark sidebar bottom-border">
+        <div class="container-fluid">
+            <span id="navbarTitle" class="navbar-brand mb-0 h1"></span>
+            <div class="dropdown dropstart">
+                <button class="btn btn-secondary dropdown-toggle" type="button"
+                        data-bs-toggle="dropdown">
+                    Actions
+                </button>
+                <ul id="actionList" class="dropdown-menu">
+                    <li id="saveImageAction" class="dropdown-item">Save image</li>
+                    <li id="clearAction" class="dropdown-item">Clear</li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Center area -->
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Tools bar -->
+            <div id="sidebar" class="col-1 sidebar right-border p-3" style="height: 87vh;">
+            </div>
+            <!-- Canvas -->
+            <div class="col p-0 overflow-auto position-relative">
+                <div class="position-absolute" id="sketchCanvas"></div>
+            </div>
+            <!--  Options bar -->
+            <div id="optionsBar" class="col-2 sidebar left-border">
+                <div class="p-3">Tool properties</div>
+                <div class="options"></div>
+            </div>
+        </div>
+    </div>
+    <!-- Bottom bar for color palette -->
+    <nav class="navbar fixed-bottom navbar-dark p-0 sidebar top-border">
+        <div class="container-fluid colourPalette p-1">
+        </div>
+    </nav>
 </div>
 </body>
 </html>
