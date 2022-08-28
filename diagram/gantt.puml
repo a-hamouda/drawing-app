@@ -1,0 +1,22 @@
+@startgantt
+printscale daily zoom 1
+saturday are closed
+sunday are closed
+
+project starts 2022-05-30
+
+[Sketch setup] lasts 3 weeks
+
+[Tool properties] lasts 3 weeks
+[Sketch setup] -> [Tool properties]
+[Tool properties] starts 2022-06-27
+
+[Text tool] lasts 2 weeks
+[Tool properties] -> [Text tool]
+[Text tool] starts 2022-07-11
+
+[Object selection] lasts 4 weeks
+[Text tool] -> [Object selection]
+[Object selection] starts 2022-07-25
+
+@endgantt
