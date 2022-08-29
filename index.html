@@ -97,9 +97,9 @@
 </div>
 
 <!-- App interface -->
-<div id="appInterface" style="display: none">
+<div id="appInterface" style="display: none" class="h-100">
     <!-- Top bar -->
-    <nav class="navbar navbar-dark sidebar bottom-border">
+    <nav class="navbar navbar-dark sidebar bottom-border" style="height: 7.5%">
         <div class="container-fluid">
             <span id="navbarTitle" class="navbar-brand mb-0 h1"></span>
             <div class="dropdown dropstart">
@@ -116,27 +116,22 @@
     </nav>
 
     <!-- Center area -->
-    <div class="container-fluid">
-        <div class="row">
+    <div class="container-fluid" style="height: 92.5%">
+        <div class="row h-100">
             <!-- Tools bar -->
-            <div id="sidebar" class="col-1 sidebar right-border p-3" style="height: 87vh;">
+            <div id="sidebar" class="col-1 sidebar right-border p-3">
             </div>
             <!-- Canvas -->
             <div class="col p-0 overflow-auto position-relative">
                 <div class="position-absolute" id="sketchCanvas"></div>
             </div>
             <!--  Options bar -->
-            <div id="optionsBar" class="col-2 sidebar left-border">
-                <div class="p-3">Tool properties</div>
-                <div class="options"></div>
+            <div id="optionsBar" class="col-auto sidebar left-border p-3">
+                <div>Tool properties</div>
+                <div id="toolProperties" class="pt-3"></div>
             </div>
         </div>
     </div>
-    <!-- Bottom bar for color palette -->
-    <nav class="navbar fixed-bottom navbar-dark p-0 sidebar top-border">
-        <div class="container-fluid colourPalette p-1">
-        </div>
-    </nav>
 </div>
 </body>
 </html>
