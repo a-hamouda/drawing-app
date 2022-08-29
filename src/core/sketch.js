@@ -1,7 +1,6 @@
 //global variables that will store the toolbox colour palette
 //and the helper functions
 let toolbox = null;
-let colourP = null;
 let helpers = null;
 let isSetup = false;
 
@@ -16,8 +15,6 @@ function setup(backgroundColor, canvasWidth, canvasHeight) {
 
     //create helper functions and the colour palette
     helpers = new HelperFunctions();
-    colourP = new ColourPalette();
-
     //create a toolbox for storing the tools
     toolbox = new Toolbox();
 
