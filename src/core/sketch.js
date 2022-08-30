@@ -1,6 +1,5 @@
 const sketch = (canvasColor, canvasWidth, canvasHeight) => {
     let toolbox = null;
-    let helpers = null;
     let isSetup = false;
 
     return (canvas) => {
@@ -8,8 +7,7 @@ const sketch = (canvasColor, canvasWidth, canvasHeight) => {
             const mainCanvas = canvas.createCanvas(canvasWidth, canvasHeight);
             mainCanvas.parent("sketchCanvas");
 
-            //create helper functions and the colour palette
-            helpers = new HelperFunctions();
+            new SketchActions(canvas, canvasColor);
             //create a toolbox for storing the tools
             toolbox = new Toolbox();
 
