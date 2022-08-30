@@ -22,25 +22,19 @@ class Toolbox {
 
     //add a new tool icon to the html page
     addToolIcon(icon, name) {
-        const sideBarItem = createDiv(`<img alt="tool icon" src="${icon}"></div>`);
-        sideBarItem.class('sideBarItem');
-        sideBarItem.id(name);
-        sideBarItem.parent('toolbar');
-        sideBarItem.mouseClicked(() => this.toolbarItemClick(name));
+        const sideBarItem = $(`<img class="sideBarItem" id=${name} alt="tool icon" src="${icon}">`);
+        sideBarItem.on("click", () => this.toolbarItemClick(name));
+        sideBarItem.appendTo($(`#toolbar`));
     };
 
     toolbarItemClick(name) {
         //remove any existing borders
-        const items = selectAll(".sideBarItem");
-        for (let i = 0; i < items.length; i++) {
-            items[i].style('border', '0');
+        const sideBarItems = $(`.sideBarItem`);
+        for (const sideBarItem of sideBarItems) {
+            $(sideBarItem).css("border", "0");
         }
-
         this.selectTool(name);
-
-        //call loadPixels to make sure most recent changes are saved to pixel array
-        loadPixels();
-
+        //TODO: call loadPixels to make sure most recent changes are saved to pixel array
     };
 
     selectTool(toolName) {
@@ -54,7 +48,7 @@ class Toolbox {
                 }
                 //select the tool and highlight it on the toolbar
                 this.selectedTool = this.tools[i];
-                select("#" + toolName).style("border", "2px solid blue");
+                $(`#${toolName}`).css("border", "2px solid blue");
 
                 //if the tool has an options' area. Populate it now.
                 if (this.selectedTool.hasOwnProperty("populateOptions")) {

@@ -1,4 +1,4 @@
-function SprayCanTool() {
+function SprayCanTool(canvas) {
 
     this.name = "sprayCanTool";
     this.icon = "assets/sprayCan.jpg";
@@ -7,9 +7,12 @@ function SprayCanTool() {
     const spread = 10;
 
     this.draw = function () {
-        if (mouseIsPressed) {
+        if (canvas.mouseIsPressed) {
             for (let i = 0; i < points; i++) {
-                point(random(mouseX - spread, mouseX + spread), random(mouseY - spread, mouseY + spread));
+                canvas.point(
+                    canvas.random(canvas.mouseX - spread, canvas.mouseX + spread),
+                    canvas.random(canvas.mouseY - spread, canvas.mouseY + spread)
+                );
             }
         }
     };

@@ -1,11 +1,11 @@
-function MirrorDrawTool() {
+function MirrorDrawTool(canvas) {
     this.name = "mirrorDraw";
     this.icon = "assets/mirrorDraw.jpg";
 
     //which axis is being mirrored (x or y) x is default
     this.axis = "x";
     //line of symmetry is halfway across the screen
-    this.lineOfSymmetry = width / 2;
+    this.lineOfSymmetry = canvas.width / 2;
 
     //this changes in the jquery click handler. So storing it as
     //a variable self now means we can still access it in the handler
@@ -22,31 +22,31 @@ function MirrorDrawTool() {
 
     this.draw = function () {
         //display the last save state of pixels
-        updatePixels();
+        canvas.updatePixels();
 
         //do the drawing if the mouse is pressed
-        if (mouseIsPressed) {
+        if (canvas.mouseIsPressed) {
             //if the previous values are -1 set them to the current mouse location
             //and mirrored positions
             if (previousMouseX === -1) {
-                previousMouseX = mouseX;
-                previousMouseY = mouseY;
-                previousOppositeMouseX = this.calculateOpposite(mouseX, "x");
-                previousOppositeMouseY = this.calculateOpposite(mouseY, "y");
+                previousMouseX = canvas.mouseX;
+                previousMouseY = canvas.mouseY;
+                previousOppositeMouseX = this.calculateOpposite(canvas.mouseX, "x");
+                previousOppositeMouseY = this.calculateOpposite(canvas.mouseY, "y");
             }
 
                 //if there are values in the previous locations
             //draw a line between them and the current positions
             else {
-                line(previousMouseX, previousMouseY, mouseX, mouseY);
-                previousMouseX = mouseX;
-                previousMouseY = mouseY;
+                canvas.line(previousMouseX, previousMouseY, canvas.mouseX, canvas.mouseY);
+                previousMouseX = canvas.mouseX;
+                previousMouseY = canvas.mouseY;
 
                 //these are for the mirrored drawing the other side of the
                 //line of symmetry
-                const oX = this.calculateOpposite(mouseX, "x");
-                const oY = this.calculateOpposite(mouseY, "y");
-                line(previousOppositeMouseX, previousOppositeMouseY, oX, oY);
+                const oX = this.calculateOpposite(canvas.mouseX, "x");
+                const oY = this.calculateOpposite(canvas.mouseY, "y");
+                canvas.line(previousOppositeMouseX, previousOppositeMouseY, oX, oY);
                 previousOppositeMouseX = oX;
                 previousOppositeMouseY = oY;
             }
@@ -63,20 +63,20 @@ function MirrorDrawTool() {
         //after the drawing is done save the pixel state. We don't want the
         //line of symmetry to be part of our drawing
 
-        loadPixels();
+        canvas.loadPixels();
 
         //push the drawing state so that we can set the stroke weight and colour
-        push();
-        strokeWeight(3);
-        stroke("red");
+        canvas.push();
+        canvas.strokeWeight(3);
+        canvas.stroke("red");
         //draw the line of symmetry
         if (this.axis === "x") {
-            line(width / 2, 0, width / 2, height);
+            canvas.line(canvas.width / 2, 0, canvas.width / 2, canvas.height);
         } else {
-            line(0, height / 2, width, height / 2);
+            canvas.line(0, canvas.height / 2, canvas.width, canvas.height / 2);
         }
         //return to the original stroke
-        pop();
+        canvas.pop();
 
     };
 
@@ -111,18 +111,18 @@ function MirrorDrawTool() {
     //when the tool is deselected update the pixels to just show the drawing and
     //hide the line of symmetry. Also clear options
     this.unselectTool = function () {
-        updatePixels();
+        canvas.updatePixels();
         //clear options
-        select(".options").html("");
+        $(".options").html("");
     };
 
     //adds a button and click handler to the options' area. When clicked
     //toggle the line of symmetry between horizontal to vertical
     this.populateOptions = function () {
-        select(".options").html("<button id='directionButton'>Make Horizontal</button>");
+        $(".options").html("<button id='directionButton'>Make Horizontal</button>");
         // 	//click handler
-        select("#directionButton").mouseClicked(function () {
-            const button = select("#" + this.elt.id);
+        $("#directionButton").on("click", function () {
+            const button = $("#" + this.elt.id);
             if (self.axis === "x") {
                 self.axis = "y";
                 self.lineOfSymmetry = height / 2;

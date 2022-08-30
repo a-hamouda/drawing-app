@@ -4,6 +4,7 @@ jQuery(function () {
         navBar = new NavBar(configuration.sketchName, configuration.canvasColor);
         $("#sketchCanvas").height(configuration.canvasHeight).width(configuration.canvasWidth);
         $("#appInterface").css('display', 'block');
-        setup(configuration.canvasColor, configuration.canvasWidth, configuration.canvasHeight);
+        // setup(configuration.canvasColor, configuration.canvasWidth, configuration.canvasHeight);
+        new p5(sketch(configuration.canvasColor, configuration.canvasWidth, configuration.canvasHeight));
     });
 });

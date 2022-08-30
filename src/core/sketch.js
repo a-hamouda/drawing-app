@@ -1,42 +1,32 @@
-//global variables that will store the toolbox colour palette
-//and the helper functions
-let toolbox = null;
-let helpers = null;
-let isSetup = false;
+const sketch = (canvasColor, canvasWidth, canvasHeight) => {
+    let toolbox = null;
+    let helpers = null;
+    let isSetup = false;
 
+    return (canvas) => {
+        canvas.setup = () => {
+            const mainCanvas = canvas.createCanvas(canvasWidth, canvasHeight);
+            mainCanvas.parent("sketchCanvas");
 
-function setup(backgroundColor, canvasWidth, canvasHeight) {
-    if (backgroundColor === undefined || canvasWidth === undefined || canvasHeight === undefined) return;
+            //create helper functions and the colour palette
+            helpers = new HelperFunctions();
+            //create a toolbox for storing the tools
+            toolbox = new Toolbox();
 
-    let effectiveBackgroundColor = backgroundColor;
+            //add the tools to the toolbox.
+            toolbox.addTool(new FreehandTool(canvas));
+            toolbox.addTool(new LineToTool(canvas));
+            toolbox.addTool(new SprayCanTool(canvas));
+            toolbox.addTool(new MirrorDrawTool(canvas));
+            isSetup = true;
 
-    const c = createCanvas(canvasWidth, canvasHeight);
-    c.parent("sketchCanvas");
+            canvas.background(canvasColor);
+        };
 
-    //create helper functions and the colour palette
-    helpers = new HelperFunctions();
-    //create a toolbox for storing the tools
-    toolbox = new Toolbox();
-
-    //add the tools to the toolbox.
-    toolbox.addTool(new FreehandTool());
-    toolbox.addTool(new LineToTool());
-    toolbox.addTool(new SprayCanTool());
-    toolbox.addTool(new MirrorDrawTool());
-    isSetup = true;
-
-    background(effectiveBackgroundColor);
-}
-
-function draw() {
-    if (!isSetup) return;
-    //call the draw function from the selected tool.
-    //hasOwnProperty is a javascript function that tests
-    //if an object contains a particular method or property
-    //if there isn't a draw method the app will alert the user
-    if (toolbox.selectedTool.hasOwnProperty("draw")) {
-        toolbox.selectedTool.draw();
-    } else {
-        alert("it doesn't look like your tool has a draw method!");
-    }
-}
+        canvas.draw = () => {
+            if (!isSetup) return;
+            console.assert(toolbox.selectedTool.hasOwnProperty("draw"), "it doesn't look like your tool has a draw method!");
+            toolbox.selectedTool.draw();
+        };
+    };
+};
