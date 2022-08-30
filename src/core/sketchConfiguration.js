@@ -6,9 +6,9 @@ class SketchConfiguration {
      * @param {function(SketchConfiguration): void} onPopupDismissed
      */
     constructor(onPopupDismissed) {
-        this.#sketchName = 'Demo';
-        this.#canvasWidth = 500;
-        this.#canvasHeight = 500;
+        this.#sketchName = 'Demo Sketch';
+        this.#canvasWidth = 1_089;
+        this.#canvasHeight = 600;
         this.#canvasColor = SketchConfiguration.#colors[0].value;
         this.#initializeFormFields(onPopupDismissed);
 
