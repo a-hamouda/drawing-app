@@ -96,7 +96,7 @@
 </div>
 
 <!-- App interface -->
-<div id="appInterface" style="display: none" class="h-100">
+<div id="appInterface" style="display: none" class="user-select-none h-100">
     <!-- Top bar -->
     <nav class="navbar navbar-dark sidebar bottom-border" style="height: 7.5%">
         <div class="container-fluid">
@@ -122,8 +122,10 @@
                 <div id="toolbar" class="d-grid" style="grid-template-columns: 1fr 1fr"></div>
             </div>
             <!-- Canvas -->
-            <div class="col position-relative overflow-auto user-select-none">
-                <div class="position-absolute user-select-none p-lg-5" id="sketchCanvas" style="cursor: crosshair"></div>
+            <div class="col position-relative overflow-auto">
+                <div class="p-lg-5">
+                    <div class="position-absolute" id="sketchCanvas" style="cursor: crosshair"></div>
+                </div>
             </div>
             <!--  Right bar -->
             <div class="col-auto sidebar left-border d-flex flex-column justify-content-between p-0">
@@ -146,11 +148,13 @@
                                         <div class="col p-0">
                                             <div class="row">
                                                 <div class="col pe-1">X :</div>
-                                                <div id="canvasInfoMouseX" class="col ps-0" style="width: 75px">0000px</div>
+                                                <div id="canvasInfoMouseX" class="col ps-0" style="width: 75px">0000px
+                                                </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col pe-1">Y :</div>
-                                                <div id="canvasInfoMouseY" class="col ps-0" style="width: 75px">0000px</div>
+                                                <div id="canvasInfoMouseY" class="col ps-0" style="width: 75px">0000px
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
