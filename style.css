@@ -92,3 +92,13 @@ html, body {
 .header {
     background-color: #999;
 }
+
+.verticalLine {
+    margin-left: 12px;
+    margin-right: 12px;
+    border-left: 2px solid #333841;
+}
+
+.fs-sm {
+    font-size: 14px;
+}

@@ -117,18 +117,68 @@
     <!-- Center area -->
     <div class="container-fluid" style="height: 92.5%">
         <div class="row h-100">
-            <!-- Tools bar -->
+            <!-- Left bar -->
             <div class="col-auto sidebar right-border p-3">
                 <div id="toolbar" class="d-grid" style="grid-template-columns: 1fr 1fr"></div>
             </div>
             <!-- Canvas -->
-            <div class="col p-0 overflow-auto position-relative d-flex justify-content-center align-items-center user-select-none">
-                <div class="position-absolute user-select-none" id="sketchCanvas" style="cursor: crosshair"></div>
+            <div class="col position-relative overflow-auto user-select-none">
+                <div class="position-absolute user-select-none p-lg-5" id="sketchCanvas" style="cursor: crosshair"></div>
             </div>
-            <!--  Options bar -->
-            <div id="optionsBar" class="col-auto sidebar left-border p-3">
-                <div>Tool properties</div>
-                <div id="toolProperties" class="pt-3"></div>
+            <!--  Right bar -->
+            <div class="col-auto sidebar left-border d-flex flex-column justify-content-between p-0">
+                <div id="toolPropertiesContainer" class="p-3">
+                    <p>Tool properties</p>
+                    <div id="toolProperties" class="pt-3"></div>
+                </div>
+                <div class="top-border">
+                    <div class="p-3">
+                        <p>Canvas Info</p>
+                        <div class="container fs-sm">
+                            <div class="row row-cols-auto">
+                                <div class="col col-auto">
+                                    <div class="row row-cols-auto">
+                                        <div class="col d-flex justify-content-center align-content-center align-items-center ps-0">
+                                            <svg width="17" height="15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path stroke="#fff" d="M8.5 0v15M17 7.5H0"/>
+                                            </svg>
+                                        </div>
+                                        <div class="col p-0">
+                                            <div class="row">
+                                                <div class="col pe-1">X :</div>
+                                                <div id="canvasInfoMouseX" class="col ps-0" style="width: 75px">0000px</div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col pe-1">Y :</div>
+                                                <div id="canvasInfoMouseY" class="col ps-0" style="width: 75px">0000px</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col verticalLine p-0"></div>
+                                <div class="col col-auto">
+                                    <div class="row row-cols-auto">
+                                        <div class="col d-flex justify-content-center align-content-center align-items-center ps-0">
+                                            <svg width="17" height="15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path stroke="#fff" d="M.5 0v15M16.5 0v15M17 .5H0M17 14.5H0"/>
+                                            </svg>
+                                        </div>
+                                        <div class="col-auto p-0">
+                                            <div class="row">
+                                                <div class="col">W :</div>
+                                                <div id="canvasInfoWidth" class="col ps-1">0000px</div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col">H :</div>
+                                                <div id="canvasInfoHeight" class="col ps-1">0000px</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

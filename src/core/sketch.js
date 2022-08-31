@@ -26,5 +26,29 @@ const sketch = (canvasColor, canvasWidth, canvasHeight) => {
             console.assert(toolbox.selectedTool.hasOwnProperty("draw"), "it doesn't look like your tool has a draw method!");
             toolbox.selectedTool.draw();
         };
+
+        canvas.mouseMoved = () => canvas.trackMouseOverCanvas();
+        canvas.mouseDragged = () => canvas.trackMouseOverCanvas();
+
+        canvas.trackMouseOverCanvas = () => {
+            const dx = canvas.mouseX;
+            const width = canvas.width;
+            const dy = canvas.mouseY;
+            const height = canvas.height;
+            const dxText = $(`#canvasInfoMouseX`);
+            const dyText = $(`#canvasInfoMouseY`);
+
+            if (dx > width) {
+                dxText.text("+" + Math.round(dx - width) + "px");
+            } else {
+                dxText.text(Math.round(dx) + "px");
+            }
+
+            if (dy > height) {
+                dyText.text("+" + Math.round(dy - height) + "px");
+            } else {
+                dyText.text(Math.round(dy) + "px");
+            }
+        }
     };
 };
