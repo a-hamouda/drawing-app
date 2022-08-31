@@ -22,7 +22,7 @@ class Toolbox {
 
     //add a new tool icon to the html page
     addToolIcon(icon, name) {
-        const sideBarItem = $(`<img class="sideBarItem" id=${name} alt="tool icon" src="${icon}">`);
+        const sideBarItem = $(`<img class="sideBarItem" width="42px" id=${name} alt="tool icon" src="${icon}">`);
         sideBarItem.on("click", () => this.toolbarItemClick(name));
         sideBarItem.appendTo($(`#toolbar`));
     };
@@ -31,7 +31,7 @@ class Toolbox {
         //remove any existing borders
         const sideBarItems = $(`.sideBarItem`);
         for (const sideBarItem of sideBarItems) {
-            $(sideBarItem).css("border", "0");
+            $(sideBarItem).css("background-color", "transparent");
         }
         this.selectTool(name);
         //TODO: call loadPixels to make sure most recent changes are saved to pixel array
@@ -48,7 +48,7 @@ class Toolbox {
                 }
                 //select the tool and highlight it on the toolbar
                 this.selectedTool = this.tools[i];
-                $(`#${toolName}`).css("border", "2px solid blue");
+                $(`#${toolName}`).css("background-color", "blue");
 
                 //if the tool has an options' area. Populate it now.
                 if (this.selectedTool.hasOwnProperty("populateOptions")) {
