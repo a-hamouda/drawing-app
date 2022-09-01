@@ -34,7 +34,6 @@ class Toolbox {
             $(sideBarItem).css("background-color", "transparent");
         }
         this.selectTool(name);
-        //TODO: call loadPixels to make sure most recent changes are saved to pixel array
     };
 
     selectTool(toolName) {
@@ -49,11 +48,6 @@ class Toolbox {
                 //select the tool and highlight it on the toolbar
                 this.selectedTool = this.tools[i];
                 $(`#${toolName}`).css("background-color", "blue");
-
-                //if the tool has an options' area. Populate it now.
-                if (this.selectedTool.hasOwnProperty("populateOptions")) {
-                    this.selectedTool.populateOptions();
-                }
             }
         }
     }

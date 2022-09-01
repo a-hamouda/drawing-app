@@ -27,7 +27,6 @@ const sketch = (canvasColor, canvasWidth, canvasHeight) => {
 
         canvas.draw = () => {
             if (!isSetup) return;
-            console.assert(toolbox.selectedTool.hasOwnProperty("draw"), "it doesn't look like your tool has a draw method!");
             toolbox.selectedTool.draw();
         };
 
