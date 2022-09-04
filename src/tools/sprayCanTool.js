@@ -1,19 +1,27 @@
-function SprayCanTool(canvas) {
+class SprayCanTool extends ToolWithOptions {
+    static #points = 13;
+    static #spread = 10;
 
-    this.name = "sprayCanTool";
-    this.icon = "assets/icons/spray-tool.svg";
+    constructor(canvas, canvasHistory) {
+        super(canvas, canvasHistory);
+        this.name = "sprayCanTool";
+        this.icon = "assets/icons/spray-tool.svg";
+        this.options.push(new ColorPicker(this.name));
+    }
 
-    const points = 13;
-    const spread = 10;
-
-    this.draw = function () {
-        if (canvas.mouseIsPressed) {
-            for (let i = 0; i < points; i++) {
-                canvas.point(
-                    canvas.random(canvas.mouseX - spread, canvas.mouseX + spread),
-                    canvas.random(canvas.mouseY - spread, canvas.mouseY + spread)
-                );
-            }
+    onDrawStart() {
+        super.onDrawStart();
+        const fillColor = $("#" + this.name + "ColorPickerPreview").css("background-color");
+        this.drawingLayer.push();
+        this.drawingLayer.stroke(fillColor);
+        for (let i = 0; i < SprayCanTool.#points; i++) {
+            this.drawingLayer.point(
+                this.canvas.random(this.canvas.mouseX - SprayCanTool.#spread, this.canvas.mouseX + SprayCanTool.#spread),
+                this.canvas.random(this.canvas.mouseY - SprayCanTool.#spread, this.canvas.mouseY + SprayCanTool.#spread)
+            );
         }
-    };
+        this.drawingLayer.pop();
+        this.hasChanges = true;
+        super.updateCanvas();
+    }
 }

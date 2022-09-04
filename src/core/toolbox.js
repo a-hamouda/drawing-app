@@ -1,11 +1,24 @@
 //container object for storing the tools. Functions to add new tools and select a tool
 class Toolbox {
-    constructor() {
+    constructor(canvasBackgroundColor) {
+        /**
+         *
+         * @type {Tool[]}
+         */
         this.tools = [];
+        /**
+         *
+         * @type {Tool}
+         */
         this.selectedTool = null;
+        this.canvasBackgroundColor = canvasBackgroundColor;
     }
 
     //add a tool to the tools array
+    /**
+     *
+     * @param {Tool} tool
+     */
     addTool(tool) {
         //check that the object tool has an icon and a name
         console.assert(tool.hasOwnProperty("icon") && tool.hasOwnProperty("name"),
@@ -37,18 +50,24 @@ class Toolbox {
     };
 
     selectTool(toolName) {
-        //search through the tools for one that's name matches
-        //toolName
+        //search through the tools for one that's name matches toolName
         for (let i = 0; i < this.tools.length; i++) {
             if (this.tools[i].name === toolName) {
                 //if the tool has an unselectTool method run it.
-                if (this.selectedTool != null && this.selectedTool.hasOwnProperty("unselectTool")) {
-                    this.selectedTool.unselectTool();
+                if (this.selectedTool != null) {
+                    this.selectedTool.onUnselected();
                 }
                 //select the tool and highlight it on the toolbar
                 this.selectedTool = this.tools[i];
+                this.selectedTool.onSelected();
                 $(`#${toolName}`).css("background-color", "blue");
             }
+        }
+    }
+
+    clearDrawingLayers() {
+        for (const tool of this.tools) {
+            tool.clearDrawingLayer(this.canvasBackgroundColor);
         }
     }
 }

@@ -1,37 +1,43 @@
 const sketch = (canvasColor, canvasWidth, canvasHeight) => {
-    let toolbox = null;
-    let isSetup = false;
+    let toolbox;
+    /**
+     * @type {CanvasHistory}
+     */
+    let canvasHistory;
     let zoomFactor = 1;
 
     return (canvas) => {
         canvas.setup = () => {
             const mainCanvas = canvas.createCanvas(canvasWidth, canvasHeight);
+            canvas.background(canvasColor);
+
             mainCanvas.parent("sketchCanvas");
 
             $(`#canvasZoom`).val(zoomFactor + "x");
             canvas.setupZoomHandlers();
 
-            new SketchActions(canvas, canvasColor);
             //create a toolbox for storing the tools
-            toolbox = new Toolbox();
-
+            toolbox = new Toolbox(canvasColor);
+            new SketchActions(canvas, toolbox, canvasColor);
+            canvasHistory = new CanvasHistory(canvas);
+            
             //add the tools to the toolbox.
-            toolbox.addTool(new FreehandTool(canvas));
-            toolbox.addTool(new LineToTool(canvas));
-            toolbox.addTool(new SprayCanTool(canvas));
-            toolbox.addTool(new MirrorDrawTool(canvas));
-            isSetup = true;
-
-            canvas.background(canvasColor);
+            toolbox.addTool(new FreehandTool(canvas, canvasHistory));
+            toolbox.addTool(new LineToTool(canvas, canvasHistory));
+            toolbox.addTool(new SprayCanTool(canvas, canvasHistory));
+            toolbox.addTool(new MirrorDrawTool(canvas, canvasHistory));
         };
 
-        canvas.draw = () => {
-            if (!isSetup) return;
-            toolbox.selectedTool.draw();
+        canvas.mouseMoved = () => canvas.trackMouseRelativeToCanvas();
+
+        canvas.mouseDragged = () => {
+            canvas.trackMouseRelativeToCanvas();
+            if (canvas.isMouseOverCanvas()) toolbox.selectedTool.onDrawStart();
         };
 
-        canvas.mouseMoved = () => canvas.trackMouseOverCanvas();
-        canvas.mouseDragged = () => canvas.trackMouseOverCanvas();
+        canvas.mouseReleased = () => {
+            if (canvas.isMouseOverCanvas()) toolbox.selectedTool.onDrawEnd();
+        };
 
         canvas.setupZoomHandlers = () => {
             $(`#canvasIncreaseZoom`).on("click", () => {
@@ -57,7 +63,17 @@ const sketch = (canvasColor, canvasWidth, canvasHeight) => {
             canvas.image(tempCanvas, 0, 0, canvasWidth * zoomFactor, canvasHeight * zoomFactor);
         };
 
-        canvas.trackMouseOverCanvas = () => {
+        canvas.isMouseOverCanvas = () => {
+            const mouseX = canvas.mouseX;
+            const mouseY = canvas.mouseY;
+            const width = canvas.width;
+            const height = canvas.height;
+
+            if (mouseX < 0 || mouseX > width) return false;
+            return !(mouseY < 0 || mouseY > height);
+        };
+
+        canvas.trackMouseRelativeToCanvas = () => {
             const dx = canvas.mouseX;
             const width = canvas.width;
             const dy = canvas.mouseY;

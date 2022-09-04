@@ -1,29 +1,22 @@
 class SketchActions {
-    /**
-     * Actions related to sketch.
-     *
-     * @param {string} backgroundColor
-     * @param canvas
-     */
-    constructor(canvas, backgroundColor) {
-        SketchActions.#setupActionList(canvas, backgroundColor);
+    constructor(canvas, toolbox, backgroundColor) {
+        this.canvas = canvas;
+        this.toolbox = toolbox;
+        this.backgroundColor = backgroundColor;
+        this.#setupActionList();
     }
-
-    /**
-     * Setup actions for the sketch.
-     *
-     * @param canvas
-     * @param {string} backgroundColor
-     */
-    static #setupActionList(canvas, backgroundColor) {
-        $('#saveImageAction').on('click', function () {
-            const sketchName = $("#navbarTitle").text();
-            canvas.saveCanvas(sketchName, "jpg");
+    
+    #setupActionList() {
+        const self = this;
+        $('#saveImageAction').on('click', () => {
+            const sketchName = $("#sketchTitle").text();
+            self.canvas.saveCanvas(sketchName, "jpg");
         });
 
-        $('#clearAction').on('click', function () {
-            canvas.background(backgroundColor);
-            canvas.loadPixels();
+        $('#clearAction').on('click', () => {
+            self.canvas.background(this.backgroundColor);
+            self.toolbox.clearDrawingLayers();
+            self.canvas.loadPixels();
         });
     }
 }
