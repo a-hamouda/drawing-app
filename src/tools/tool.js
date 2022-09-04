@@ -2,6 +2,7 @@ class Tool {
     icon;
     name;
     canvas;
+    previousPixels;
     canvasHistory;
     drawingLayer;
     hasChanges;
@@ -16,10 +17,27 @@ class Tool {
     }
 
     onSelected() {
+        this.canvas.loadPixels();
+        this.previousPixels = this.canvas.pixels;
         this.updateDrawingLayer();
     }
 
     onUnselected() {
+        let sessionHasData = false;
+        this.drawingLayer.loadPixels();
+        for (let i = 0; i < this.drawingLayer.pixels.length; i++) {
+            if (this.drawingLayer.pixels[i] !== this.previousPixels[i]) {
+                sessionHasData = true;
+                console.log("data found");
+                break;
+            }
+        }
+        if (!sessionHasData) {
+            for (let i = 0; i < this.canvas.pixels.length; i++) {
+                this.canvas.pixels[i] = this.previousPixels[i];
+            }
+            this.canvas.updatePixels();
+        }
     };
 
     onDrawStart() {
@@ -29,7 +47,6 @@ class Tool {
         if (this.hasChanges) {
             this.drawingLayer.loadPixels();
             this.canvasHistory.add(this.drawingLayer.pixels);
-            this.drawingLayer.image(this.canvas, 0, 0);
             this.hasChanges = false;
         }
     }
@@ -39,12 +56,14 @@ class Tool {
         this.drawingLayer.background(backgroundColor);
     }
 
-    updateCanvas() {
+    updateCanvas(loadDrawingLayerPixels = true) {
         this.canvas.image(this.drawingLayer, 0, 0);
-        this.updateDrawingLayer();
+        this.updateDrawingLayer(loadDrawingLayerPixels);
     }
 
-    updateDrawingLayer() {
+    updateDrawingLayer(loadDrawingLayerPixels = true) {
+        if (loadDrawingLayerPixels) this.drawingLayer.loadPixels();
+        this.previousPixels = this.drawingLayer.pixels;
         this.drawingLayer.image(this.canvas, 0, 0);
     }
 }

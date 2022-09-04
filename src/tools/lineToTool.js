@@ -30,7 +30,7 @@ class LineToTool extends ToolWithOptions {
             this.drawingLayer.pop();
             this.hasChanges = true;
         }
-        super.updateCanvas();
+        super.updateCanvas(false);
     }
 
     onDrawEnd() {
