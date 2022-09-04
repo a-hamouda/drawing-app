@@ -4,38 +4,39 @@ class ColorPicker extends ToolOption {
     #rgba = Uint8ClampedArray.from([0, 0, 0, 255]);
 
     #html = `
-        <fieldset id="${this.toolId}ColorPickerFieldSet" class="form-group border rounded-1 p-3" style="display: none">
-            <legend class="float-none w-auto ps-2 pe-2 fs-6">Stroke Color</legend>
-                <div class="row">
-                    <div class="col">
-                        <div class="input-group">
-                            <div class="input-group-text colorPickerRGBALabel">R</div>
-                            <input class="colorPickerInput" id="${this.toolId}ColorPickerRedInput" max="255" min="0" type="number" value=${this.#rgba[0]}>
-                        </div>
-                        <div class="input-group pt-1">
-                            <div class="input-group-text colorPickerRGBALabel">G</div>
-                            <input class="colorPickerInput" id="${this.toolId}ColorPickerGreenInput" max="255" min="0" type="number" value=${this.#rgba[1]}>
-                        </div>
-                        <div class="input-group pt-1">
-                            <div class="input-group-text colorPickerRGBALabel" >B</div>
-                            <input class="colorPickerInput" id="${this.toolId}ColorPickerBlueInput" max="255" min="0" type="number" value=${this.#rgba[2]}>
-                        </div>
-                        <div class="input-group pt-1">
-                            <div class="input-group-text colorPickerRGBALabel" >A</div>
-                            <input class="colorPickerInput" id="${this.toolId}ColorPickerAlphaInput" max="255" min="0" type="number" value="${this.#rgba[3]}">
-                        </div>
-                    </div>
-                    <div class="col-auto">
-                        <canvas class="pt-1" id="${this.toolId}ColorPickerCanvas" style="cursor: default;" width="${this.#wheelRadius * 2}px" height="${this.#wheelRadius * 2}px"></canvas>
-                    </div>
-                </div>
-                <div class="d-flex align-content-center justify-content-center pt-3">
-                    <div class="row w-50" style="height: 25px;">
-                        <div class="col" id="${this.toolId}ColorPickerPreview" style="background-color: ${this.#selectedColor};"></div>
-                        <div class="col" id="${this.toolId}ColorPickerTempPreview" style="background-color: ${this.#selectedColor};"></div>
-                    </div>
-                </div>
-        </fieldset>`;
+<fieldset id="${this.toolId}ColorPickerFieldSet" class="form-group border rounded-1 p-3" style="display: none">
+    <legend class="float-none w-auto ps-2 pe-2 fs-6">Stroke Color</legend>
+    <div class="row">
+        <div class="col">
+            <div class="input-group">
+                <div class="input-group-text colorPickerRGBALabel">R</div>
+                    <input class="colorPickerInput" id="${this.toolId}ColorPickerRedInput" max="255" min="0" type="number" value=${this.#rgba[0]}>
+            </div>
+            <div class="input-group pt-1">
+                <div class="input-group-text colorPickerRGBALabel">G</div>
+                <input class="colorPickerInput" id="${this.toolId}ColorPickerGreenInput" max="255" min="0" type="number" value=${this.#rgba[1]}>
+            </div>
+            <div class="input-group pt-1">
+                <div class="input-group-text colorPickerRGBALabel" >B</div>
+                <input class="colorPickerInput" id="${this.toolId}ColorPickerBlueInput" max="255" min="0" type="number" value=${this.#rgba[2]}>
+            </div>
+            <div class="input-group pt-1">
+                <div class="input-group-text colorPickerRGBALabel" >A</div>
+                <input class="colorPickerInput" id="${this.toolId}ColorPickerAlphaInput" max="255" min="0" type="number" value="${this.#rgba[3]}">
+            </div>
+        </div>
+        <div class="col-auto">
+            <canvas class="pt-1" id="${this.toolId}ColorPickerCanvas" style="cursor: default;" width="${this.#wheelRadius * 2}px" height="${this.#wheelRadius * 2}px"></canvas>
+        </div>
+    </div>
+    <div class="d-flex align-content-center justify-content-center pt-3">
+        <div class="row w-50" style="height: 25px;">
+            <div class="col" id="${this.toolId}ColorPickerPreview" style="background-color: ${this.#selectedColor};"></div>
+            <div class="col" id="${this.toolId}ColorPickerTempPreview" style="background-color: ${this.#selectedColor};"></div>
+        </div>
+    </div>
+</fieldset>
+`;
 
     constructor(toolId) {
         super(toolId);
@@ -69,7 +70,7 @@ class ColorPicker extends ToolOption {
             $(canvas).css("cursor", 'pointer');
             const hexColor = ColorPicker.#RGBAToHexA(this.#getPointedColor(event));
             $("#" + this.toolId + "ColorPickerTempPreview").css("background-color", `${hexColor}`);
-            
+
         });
 
         canvas.on("mouseleave", () => {
