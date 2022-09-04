@@ -2,13 +2,13 @@
 <html lang="en">
 <head>
     <!-- Styles -->
-    <link rel="stylesheet" type="text/css" href="style.css">
+    <link href="style.css" rel="stylesheet" type="text/css">
     <link href="lib/bootstrap/bootstrap.min.css" rel="stylesheet" type="text/css">
 
     <!-- 3rd party -->
-    <script src="lib/p5.min.js"></script>
-    <script src="lib/jquery/jquery-3.6.0.min.js"></script>
-    <script src="lib/bootstrap/bootstrap.bundle.min.js"></script>
+    <script src="lib/p5.min.js" rel="script" type="text/javascript"></script>
+    <script src="lib/jquery/jquery-3.6.0.min.js" rel="script" type="text/javascript"></script>
+    <script src="lib/bootstrap/bootstrap.bundle.min.js" rel="script" type="text/javascript"></script>
 
     <!-- Custom scripts -->
     <script src="src/main.js"></script>
@@ -72,15 +72,13 @@
                             <div class="row">
                                 <div class="col">
                                     <div class="dropdown">
-                                        <a class="btn btn-outline-secondary dropdown-toggle w-100" href="#"
-                                           role="button"
-                                           data-bs-toggle="dropdown" aria-expanded="false">
+                                        <button class="btn btn-outline-secondary dropdown-toggle w-100"
+                                                type="button"
+                                                data-bs-toggle="dropdown" aria-expanded="false">
                                             Select background color
-                                        </a>
+                                        </button>
 
-                                        <ul id="colorsList" class="dropdown-menu w-100 text-center"
-                                            aria-labelledby="dropdownMenuLink">
-                                        </ul>
+                                        <ul id="colorsList" class="dropdown-menu w-100 text-center"></ul>
                                     </div>
                                 </div>
                                 <!-- Background color viewer -->
