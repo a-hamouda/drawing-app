@@ -11,13 +11,14 @@ class SprayCanTool extends ToolWithOptions {
 
     onDrawStart() {
         super.onDrawStart();
+        const mouse = this.canvas.normalizedMouse();
         const fillColor = $("#" + this.name + "ColorPickerPreview").css("background-color");
         this.drawingLayer.push();
         this.drawingLayer.stroke(fillColor);
         for (let i = 0; i < SprayCanTool.#points; i++) {
             this.drawingLayer.point(
-                this.canvas.random(this.canvas.mouseX - SprayCanTool.#spread, this.canvas.mouseX + SprayCanTool.#spread),
-                this.canvas.random(this.canvas.mouseY - SprayCanTool.#spread, this.canvas.mouseY + SprayCanTool.#spread)
+                this.canvas.random(mouse.x - SprayCanTool.#spread, mouse.x + SprayCanTool.#spread),
+                this.canvas.random(mouse.y - SprayCanTool.#spread, mouse.y + SprayCanTool.#spread)
             );
         }
         this.drawingLayer.pop();

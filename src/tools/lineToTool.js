@@ -14,9 +14,10 @@ class LineToTool extends ToolWithOptions {
 
     onDrawStart() {
         super.onDrawStart();
+        const mouse = this.canvas.normalizedMouse();
         if (this.#startMouseX === -1) {
-            this.#startMouseX = this.canvas.mouseX;
-            this.#startMouseY = this.canvas.mouseY;
+            this.#startMouseX = mouse.x;
+            this.#startMouseY = mouse.y;
             this.drawingLayer.loadPixels();
         } else {
             //update the screen with the saved pixels to hide any previous
@@ -26,7 +27,7 @@ class LineToTool extends ToolWithOptions {
             const strokeColor = $("#" + this.name + "ColorPickerPreview").css("background-color");
             this.drawingLayer.push();
             this.drawingLayer.stroke(strokeColor);
-            this.drawingLayer.line(this.#startMouseX, this.#startMouseY, this.canvas.mouseX, this.canvas.mouseY);
+            this.drawingLayer.line(this.#startMouseX, this.#startMouseY, mouse.x, mouse.y);
             this.drawingLayer.pop();
             this.hasChanges = true;
         }

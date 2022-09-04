@@ -49,23 +49,24 @@ class MirrorDrawTool extends ToolWithOptions {
 
     onDrawStart() {
         super.onDrawStart();
+        const mouse = this.canvas.normalizedMouse();
         if (this.#previousMouseX === -1) {
-            this.#previousMouseX = this.canvas.mouseX;
-            this.#previousMouseY = this.canvas.mouseY;
-            this.#previousOppositeMouseX = this.calculateOpposite(this.canvas.mouseX, "x");
-            this.#previousOppositeMouseY = this.calculateOpposite(this.canvas.mouseY, "y");
+            this.#previousMouseX = mouse.x;
+            this.#previousMouseY = mouse.y;
+            this.#previousOppositeMouseX = this.calculateOpposite(mouse.x, "x");
+            this.#previousOppositeMouseY = this.calculateOpposite(mouse.y, "y");
         } else {
             const strokeColor = $("#" + this.name + "ColorPickerPreview").css("background-color");
             this.drawingLayer.push();
             this.drawingLayer.stroke(strokeColor);
-            this.drawingLayer.line(this.#previousMouseX, this.#previousMouseY, this.canvas.mouseX, this.canvas.mouseY);
-            this.#previousMouseX = this.canvas.mouseX;
-            this.#previousMouseY = this.canvas.mouseY;
+            this.drawingLayer.line(this.#previousMouseX, this.#previousMouseY, mouse.x, mouse.y);
+            this.#previousMouseX = mouse.x;
+            this.#previousMouseY = mouse.y;
 
             //these are for the mirrored drawing the other side of the
             //line of symmetry
-            const oX = this.calculateOpposite(this.canvas.mouseX, "x");
-            const oY = this.calculateOpposite(this.canvas.mouseY, "y");
+            const oX = this.calculateOpposite(mouse.x, "x");
+            const oY = this.calculateOpposite(mouse.y, "y");
             this.drawingLayer.line(this.#previousOppositeMouseX, this.#previousOppositeMouseY, oX, oY);
             this.#previousOppositeMouseX = oX;
             this.#previousOppositeMouseY = oY;
