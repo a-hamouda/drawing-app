@@ -19,6 +19,8 @@ class Tool {
     onSelected() {
         this.canvas.loadPixels();
         this.previousPixels = this.canvas.pixels;
+        this.drawingLayer.loadPixels();
+        this.drawingLayer.image(this.canvas, 0, 0);
         this.updateDrawingLayer();
     }
 
