@@ -16,16 +16,17 @@ class FreehandTool extends ToolWithOptions {
     onDrawStart() {
         super.onDrawStart();
         const strokeColor = $("#" + this.name + "ColorPickerPreview").css("background-color");
+        const mouse = this.canvas.normalizedMouse();
         if (this.#previousMouseX === -1) {
-            this.#previousMouseX = this.canvas.mouseX;
-            this.#previousMouseY = this.canvas.mouseY;
+            this.#previousMouseX = mouse.x;
+            this.#previousMouseY = mouse.y;
         } else {
             this.drawingLayer.push();
             this.drawingLayer.stroke(strokeColor);
-            this.drawingLayer.line(this.#previousMouseX, this.#previousMouseY, this.canvas.mouseX, this.canvas.mouseY);
+            this.drawingLayer.line(this.#previousMouseX, this.#previousMouseY, mouse.x, mouse.y);
             this.drawingLayer.pop();
-            this.#previousMouseX = this.canvas.mouseX;
-            this.#previousMouseY = this.canvas.mouseY;
+            this.#previousMouseX = mouse.x;
+            this.#previousMouseY = mouse.y;
             this.hasChanges = true;
         }
         super.updateCanvas();

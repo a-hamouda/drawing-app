@@ -1,10 +1,16 @@
 const sketch = (canvasColor, canvasWidth, canvasHeight) => {
+    /**
+     * @type {Toolbox}
+     */
     let toolbox;
     /**
      * @type {CanvasHistory}
      */
     let canvasHistory;
-    let zoomFactor = 1;
+    /**
+     * @type {number}
+     */
+    let zoomFactor;
 
     return (canvas) => {
         canvas.setup = () => {
@@ -13,14 +19,11 @@ const sketch = (canvasColor, canvasWidth, canvasHeight) => {
 
             mainCanvas.parent("sketchCanvas");
 
-            $(`#canvasZoom`).val(zoomFactor + "x");
-            canvas.setupZoomHandlers();
-
             //create a toolbox for storing the tools
             toolbox = new Toolbox(canvasColor);
-            new SketchActions(canvas, toolbox, canvasColor);
+            new SketchActions(canvas, toolbox, canvasColor, canvas.updateZoomFactor);
             canvasHistory = new CanvasHistory(canvas);
-            
+
             //add the tools to the toolbox.
             toolbox.addTool(new FreehandTool(canvas, canvasHistory));
             toolbox.addTool(new LineToTool(canvas, canvasHistory));
@@ -39,44 +42,35 @@ const sketch = (canvasColor, canvasWidth, canvasHeight) => {
             if (canvas.isMouseOverCanvas()) toolbox.selectedTool.onDrawEnd();
         };
 
-        canvas.setupZoomHandlers = () => {
-            $(`#canvasIncreaseZoom`).on("click", () => {
-                if (zoomFactor >= 3) return;
-                zoomFactor += 0.5;
-                canvas.zoom();
-            });
-
-            $(`#canvasDecreaseZoom`).on("click", () => {
-                if (zoomFactor <= 0.5) return;
-                zoomFactor -= 0.5;
-                canvas.zoom();
-            });
+        canvas.updateZoomFactor = (factor) => {
+            zoomFactor = factor;
         };
 
-        canvas.zoom = () => {
-            // set zoom input value on canvas info pane
-            $(`#canvasZoom`).val(zoomFactor + "x");
-            const tempCanvas = canvas.createGraphics(canvasWidth, canvasHeight);
-            tempCanvas.image(canvas, 0, 0, canvasWidth, canvasHeight);
-            tempCanvas.loadPixels();
-            canvas.resizeCanvas(canvasWidth * zoomFactor, canvasHeight * zoomFactor);
-            canvas.image(tempCanvas, 0, 0, canvasWidth * zoomFactor, canvasHeight * zoomFactor);
+        /**
+         *
+         * @return {{x: number, y: number}}
+         */
+        canvas.normalizedMouse = () => {
+            const mouseX = canvas.mouseX;
+            const mouseY = canvas.mouseY;
+            const normalizedX = (mouseX / (canvasWidth * zoomFactor)) * canvasWidth;
+            const normalizedY = (mouseY / (canvasHeight * zoomFactor)) * canvasHeight;
+            return {x: normalizedX, y: normalizedY};
         };
 
         canvas.isMouseOverCanvas = () => {
-            const mouseX = canvas.mouseX;
-            const mouseY = canvas.mouseY;
+            const mouse = canvas.normalizedMouse();
             const width = canvas.width;
             const height = canvas.height;
 
-            if (mouseX < 0 || mouseX > width) return false;
-            return !(mouseY < 0 || mouseY > height);
+            if (mouse.x < 0 || mouse.x > width) return false;
+            return !(mouse.y < 0 || mouse.y > height);
         };
 
         canvas.trackMouseRelativeToCanvas = () => {
-            const dx = canvas.mouseX;
+            const dx = canvas.normalizedMouse().x;
             const width = canvas.width;
-            const dy = canvas.mouseY;
+            const dy = canvas.normalizedMouse().y;
             const height = canvas.height;
             const dxText = $(`#canvasInfoMouseX`);
             const dyText = $(`#canvasInfoMouseY`);
