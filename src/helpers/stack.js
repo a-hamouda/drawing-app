@@ -1,17 +1,33 @@
+/**
+ * Data structure element.
+ */
 class DataStructureNode {
     constructor(data, next = null) {
+        /**
+         * Data of the element
+         */
         this.data = data;
+        /**
+         * Next element in the data structure.
+         * @type {DataStructureNode}
+         */
         this.next = next;
     }
 }
 
+/**
+ * Stack data structure.
+ */
 class Stack {
     constructor() {
         this.first = null;
         this.last = null;
         this.size = 0;
     }
-    //Adds element to the beginning of the list. similar to Array.unShift()
+
+    /**
+     *  Add element to the beginning of the stack.
+     */
     add(data) {
         const newNode = new DataStructureNode(data);
         if (!this.first) {
@@ -25,7 +41,9 @@ class Stack {
         return ++this.size;
     }
 
-    //Removes element from the beginning of the list. similar to Array.shift()
+    /**
+     * Removes element from the beginning of the list.
+     */
     remove() {
         if (!this.first) return null;
         const temp = this.first;
