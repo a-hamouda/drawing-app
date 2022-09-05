@@ -4,12 +4,21 @@
 class LineToTool extends ToolWithOptions {
     #startMouseX = -1;
     #startMouseY = -1;
+    /**
+     * @type string
+     */
+    #strokeColor;
+    /**
+     * @type number
+     */
+    #strokeWeight;
 
     constructor(canvas, canvasHistory) {
         super(canvas, canvasHistory);
         this.icon = "assets/icons/line-tool.svg";
         this.name = "LineTo";
-        this.options.push(new ColorPicker(this.name));
+        this.options.push(new ColorPicker(this.name, this.#onStrokeColorChanged.bind(this)));
+        this.options.push(new StrokeWeight(this.name, this.#onStrokeWeightChanged.bind(this)))
     }
 
     onDrawStart() {
@@ -24,9 +33,9 @@ class LineToTool extends ToolWithOptions {
             //line between mouse pressed and released
             this.drawingLayer.updatePixels();
             //draw the line
-            const strokeColor = $("#" + this.name + "ColorPickerPreview").css("background-color");
             this.drawingLayer.push();
-            this.drawingLayer.stroke(strokeColor);
+            this.drawingLayer.stroke(this.#strokeColor);
+            this.drawingLayer.strokeWeight(this.#strokeWeight);
             this.drawingLayer.line(this.#startMouseX, this.#startMouseY, mouse.x, mouse.y);
             this.drawingLayer.pop();
             this.hasChanges = true;
@@ -38,5 +47,13 @@ class LineToTool extends ToolWithOptions {
         this.#startMouseX = -1;
         this.#startMouseY = -1;
         super.onDrawEnd();
+    }
+
+    #onStrokeColorChanged(color) {
+        this.#strokeColor = color;
+    }
+
+    #onStrokeWeightChanged(weight) {
+        this.#strokeWeight = weight;
     }
 }

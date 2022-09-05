@@ -1,4 +1,12 @@
 class MirrorDrawTool extends ToolWithOptions {
+    /**
+     * @type string
+     */
+    #strokeColor;
+    /**
+     * @type number
+     */
+    #strokeWeight;
     //where was the mouse on the last time draw was called.
     //set it to -1 to begin with
     #previousMouseX = -1;
@@ -13,7 +21,8 @@ class MirrorDrawTool extends ToolWithOptions {
         super(canvas, canvasHistory);
         this.name = "mirrorDraw";
         this.icon = "assets/icons/mirror-tool.svg";
-        this.options.push(new ColorPicker(this.name));
+        this.options.push(new ColorPicker(this.name, this.#onStrokeColorChanged.bind(this)));
+        this.options.push(new StrokeWeight(this.name, this.#onStrokeWeightChanged.bind(this)));
 
         //which axis is being mirrored (x or y) x is default
         this.axis = "x";
@@ -56,9 +65,9 @@ class MirrorDrawTool extends ToolWithOptions {
             this.#previousOppositeMouseX = this.calculateOpposite(mouse.x, "x");
             this.#previousOppositeMouseY = this.calculateOpposite(mouse.y, "y");
         } else {
-            const strokeColor = $("#" + this.name + "ColorPickerPreview").css("background-color");
             this.drawingLayer.push();
-            this.drawingLayer.stroke(strokeColor);
+            this.drawingLayer.stroke(this.#strokeColor);
+            this.drawingLayer.strokeWeight(this.#strokeWeight);
             this.drawingLayer.line(this.#previousMouseX, this.#previousMouseY, mouse.x, mouse.y);
             this.#previousMouseX = mouse.x;
             this.#previousMouseY = mouse.y;
@@ -122,5 +131,13 @@ class MirrorDrawTool extends ToolWithOptions {
         else {
             return this.lineOfSymmetry - (n - this.lineOfSymmetry);
         }
+    }
+
+    #onStrokeColorChanged(color) {
+        this.#strokeColor = color;
+    }
+
+    #onStrokeWeightChanged(weight) {
+        this.#strokeWeight = weight;
     }
 }

@@ -5,24 +5,33 @@ class FreehandTool extends ToolWithOptions {
     //we haven't started drawing yet.
     #previousMouseX = -1;
     #previousMouseY = -1;
+    /**
+     * @type string
+     */
+    #strokeColor;
+    /**
+     * @type number
+     */
+    #strokeWeight;
 
     constructor(canvas, canvasHistory) {
         super(canvas, canvasHistory);
         this.icon = "assets/icons/free-hand.svg";
         this.name = "freehand";
-        this.options.push(new ColorPicker(this.name));
+        this.options.push(new ColorPicker(this.name, this.#onStrokeColorChanged.bind(this)));
+        this.options.push(new StrokeWeight(this.name, this.#onStrokeWeightChanged.bind(this)));
     }
 
     onDrawStart() {
         super.onDrawStart();
-        const strokeColor = $("#" + this.name + "ColorPickerPreview").css("background-color");
         const mouse = this.canvas.normalizedMouse();
         if (this.#previousMouseX === -1) {
             this.#previousMouseX = mouse.x;
             this.#previousMouseY = mouse.y;
         } else {
             this.drawingLayer.push();
-            this.drawingLayer.stroke(strokeColor);
+            this.drawingLayer.stroke(this.#strokeColor);
+            this.drawingLayer.strokeWeight(this.#strokeWeight);
             this.drawingLayer.line(this.#previousMouseX, this.#previousMouseY, mouse.x, mouse.y);
             this.drawingLayer.pop();
             this.#previousMouseX = mouse.x;
@@ -36,5 +45,13 @@ class FreehandTool extends ToolWithOptions {
         this.#previousMouseX = -1;
         this.#previousMouseY = -1;
         super.onDrawEnd();
+    }
+
+    #onStrokeWeightChanged(weight) {
+        this.#strokeWeight = weight;
+    }
+
+    #onStrokeColorChanged(color) {
+        this.#strokeColor = color;
     }
 }

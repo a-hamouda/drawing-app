@@ -1,28 +1,33 @@
 class ColorPicker extends ToolOption {
+    /**
+     * @type function(string)
+     */
+    #onChanged;
+
     #wheelRadius = 75;
     #selectedColor = '#000';
     #rgba = Uint8ClampedArray.from([0, 0, 0, 255]);
 
     #html = `
-<fieldset id="${this.toolId}ColorPickerFieldSet" class="form-group border rounded-1 p-3" style="display: none">
+<fieldset id="${this.toolId}${this.name}" class="form-group border rounded-1 p-3" style="display: none">
     <legend class="float-none w-auto ps-2 pe-2 fs-6">Stroke Color</legend>
     <div class="row">
         <div class="col">
             <div class="input-group">
-                <div class="input-group-text colorPickerRGBALabel">R</div>
-                    <input class="colorPickerInput" id="${this.toolId}ColorPickerRedInput" max="255" min="0" type="number" value=${this.#rgba[0]}>
+                <span class="input-group-text border-dark colorPickerRGBALabel">R</span>
+                <input class="form-control text-center border-dark" id="${this.toolId}ColorPickerRedInput" max="255" min="0" type="number" value=${this.#rgba[0]}>
             </div>
             <div class="input-group pt-1">
-                <div class="input-group-text colorPickerRGBALabel">G</div>
-                <input class="colorPickerInput" id="${this.toolId}ColorPickerGreenInput" max="255" min="0" type="number" value=${this.#rgba[1]}>
+                <span class="input-group-text colorPickerRGBALabel border-dark">G</span>
+                <input class="form-control text-center border-dark" id="${this.toolId}ColorPickerGreenInput" max="255" min="0" type="number" value=${this.#rgba[1]}>
             </div>
             <div class="input-group pt-1">
-                <div class="input-group-text colorPickerRGBALabel" >B</div>
-                <input class="colorPickerInput" id="${this.toolId}ColorPickerBlueInput" max="255" min="0" type="number" value=${this.#rgba[2]}>
+                <span class="input-group-text colorPickerRGBALabel border-dark" >B</span>
+                <input class="form-control text-center border-dark" id="${this.toolId}ColorPickerBlueInput" max="255" min="0" type="number" value=${this.#rgba[2]}>
             </div>
             <div class="input-group pt-1">
-                <div class="input-group-text colorPickerRGBALabel" >A</div>
-                <input class="colorPickerInput" id="${this.toolId}ColorPickerAlphaInput" max="255" min="0" type="number" value="${this.#rgba[3]}">
+                <span class="input-group-text colorPickerRGBALabel border-dark" >A</span>
+                <input class="form-control text-center border-dark" id="${this.toolId}ColorPickerAlphaInput" max="255" min="0" type="number" value="${this.#rgba[3]}">
             </div>
         </div>
         <div class="col-auto">
@@ -38,8 +43,9 @@ class ColorPicker extends ToolOption {
 </fieldset>
 `;
 
-    constructor(toolId) {
-        super(toolId);
+    constructor(toolId, onChanged) {
+        super(toolId, "ColorPicker");
+        this.#onChanged = onChanged;
         const properties = $(`#toolOptions`);
         properties.append(this.#html);
 
@@ -50,14 +56,7 @@ class ColorPicker extends ToolOption {
         this.#setColorSelectHandler();
         this.#setOnColorWheelHoverHandler();
         this.#setRGBAInputHandlers();
-    }
-
-    show() {
-        $('#' + this.toolId + "ColorPickerFieldSet").show();
-    }
-
-    hide() {
-        $('#' + this.toolId + "ColorPickerFieldSet").hide();
+        this.#onChanged(this.#selectedColor);
     }
 
     #setOnColorWheelHoverHandler() {
@@ -87,52 +86,53 @@ class ColorPicker extends ToolOption {
             $("#" + this.toolId + "ColorPickerGreenInput").val(this.#rgba[1]);
             $("#" + this.toolId + "ColorPickerBlueInput").val(this.#rgba[2]);
             $("#" + this.toolId + "ColorPickerAlphaInput").val(this.#rgba[3]);
-            this.#updateColorPreview();
+            this.#updateColor();
         });
     }
 
     #setRGBAInputHandlers() {
         const redInput = $("#" + this.toolId + "ColorPickerRedInput");
-        redInput.on('change', () => {
+        redInput.on('input change', () => {
             const newValue = redInput.val();
             if (newValue.length === 0) redInput.val(0);
             if (newValue < 0 || newValue > 255) return;
             this.#rgba[0] = newValue;
-            this.#updateColorPreview();
+            this.#updateColor();
         });
 
         const greenInput = $("#" + this.toolId + "ColorPickerGreenInput");
-        greenInput.on('change', () => {
+        greenInput.on('input change', () => {
             const newValue = greenInput.val();
             if (newValue.length === 0) greenInput.val(0);
             if (newValue < 0 || newValue > 255) return;
             this.#rgba[1] = newValue;
-            this.#updateColorPreview();
+            this.#updateColor();
         });
 
         const blueInput = $("#" + this.toolId + "ColorPickerBlueInput");
-        blueInput.on('change', () => {
+        blueInput.on('input change', () => {
             const newValue = blueInput.val();
             if (newValue.length === 0) blueInput.val(0);
             if (newValue < 0 || newValue > 255) return;
             this.#rgba[2] = newValue;
-            this.#updateColorPreview();
+            this.#updateColor();
         });
 
         const alphaInput = $("#" + this.toolId + "ColorPickerAlphaInput");
-        alphaInput.on('change', () => {
+        alphaInput.on('input change', () => {
             const newValue = alphaInput.val();
             if (newValue.length === 0) alphaInput.val(0);
             if (newValue < 0 || newValue > 255) return;
             this.#rgba[3] = newValue;
-            this.#updateColorPreview();
+            this.#updateColor();
         });
     }
 
-    #updateColorPreview() {
+    #updateColor() {
         this.#selectedColor = ColorPicker.#RGBAToHexA(this.#rgba);
         $("#" + this.toolId + "ColorPickerPreview").css("background-color", `${this.#selectedColor}`);
         $("#" + this.toolId + "ColorPickerTempPreview").css("background-color", `${this.#selectedColor}`);
+        this.#onChanged(this.#selectedColor);
     }
 
     #isOverColorWheel(event) {

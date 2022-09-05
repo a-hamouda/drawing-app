@@ -25,6 +25,8 @@
     <script src="src/tools/mirrorDrawTool.js"></script>
     <script src="src/options/toolOption.js"></script>
     <script src="src/options/colorPicker.js"></script>
+    <script src="src/options/strokeWeight.js"></script>
+    <script src="src/options/spray.js"></script>
     <title>Drawing app</title>
 </head>
 <body>
@@ -147,69 +149,67 @@
                 </div>
             </div>
             <!--  Right bar -->
-            <div class="col-auto sidebar left-border d-flex flex-column justify-content-between p-0">
-                <div id="toolPropertiesContainer" class="p-3">
+            <div class="col-auto row-cols-auto sidebar left-border d-flex flex-column justify-content-between overflow-scroll p-0" style="width: 22vw">
+                <div class="mh-100 p-3 pb-0" id="toolPropertiesContainer">
                     <p>Tool Options</p>
                     <div id="toolOptions" class="container p-0"></div>
                 </div>
-                <div class="top-border">
-                    <div class="p-3">
-                        <p>Canvas Info</p>
-                        <div class="container fs-sm">
-                            <div class="row row-cols-auto">
-                                <div class="col col-auto">
-                                    <div class="row row-cols-auto">
-                                        <div class="col d-flex justify-content-center align-content-center align-items-center ps-0">
-                                            <svg width="17" height="15" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path stroke="#fff" d="M8.5 0v15M17 7.5H0"/>
-                                            </svg>
-                                        </div>
-                                        <div class="col p-0">
-                                            <div class="row">
-                                                <div class="col pe-1">X :</div>
-                                                <div id="canvasInfoMouseX" class="col ps-0" style="width: 75px">0000px
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col pe-1">Y :</div>
-                                                <div id="canvasInfoMouseY" class="col ps-0" style="width: 75px">0000px
-                                                </div>
-                                            </div>
-                                        </div>
+                <div class="mh-100 top-border p-3">
+                    <p>Canvas Info</p>
+                    <div class="container fs-sm">
+                        <div class="row row-cols-auto">
+                            <div class="col col-auto">
+                                <div class="row row-cols-auto">
+                                    <div class="col d-flex justify-content-center align-content-center align-items-center ps-0">
+                                        <svg width="17" height="15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path stroke="#fff" d="M8.5 0v15M17 7.5H0"/>
+                                        </svg>
                                     </div>
-                                </div>
-                                <div class="col verticalLine p-0"></div>
-                                <div class="col col-auto">
-                                    <div class="row row-cols-auto">
-                                        <div class="col d-flex justify-content-center align-content-center align-items-center ps-0">
-                                            <svg width="17" height="15" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path stroke="#fff" d="M.5 0v15M16.5 0v15M17 .5H0M17 14.5H0"/>
-                                            </svg>
-                                        </div>
-                                        <div class="col-auto p-0">
-                                            <div class="row">
-                                                <div class="col">W :</div>
-                                                <div id="canvasInfoWidth" class="col ps-1">0000px</div>
+                                    <div class="col p-0">
+                                        <div class="row">
+                                            <div class="col pe-1">X :</div>
+                                            <div id="canvasInfoMouseX" class="col ps-0" style="width: 75px">0000px
                                             </div>
-                                            <div class="row">
-                                                <div class="col">H :</div>
-                                                <div id="canvasInfoHeight" class="col ps-1">0000px</div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col pe-1">Y :</div>
+                                            <div id="canvasInfoMouseY" class="col ps-0" style="width: 75px">0000px
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="pt-3 w-50">
-                            <div class="mb-3">
-                                <label for="canvasZoom" class="form-label fs-sm">Zoom</label>
-                                <div class="input-group">
-                                    <button class="btn btn-outline-secondary" id="canvasIncreaseZoom" type="button"> +
-                                    </button>
-                                    <input disabled id="canvasZoom" type="text" class="form-control text-center">
-                                    <button class="btn btn-outline-secondary" id="canvasDecreaseZoom" type="button"> -
-                                    </button>
+                            <div class="col verticalLine p-0"></div>
+                            <div class="col col-auto">
+                                <div class="row row-cols-auto">
+                                    <div class="col d-flex justify-content-center align-content-center align-items-center ps-0">
+                                        <svg width="17" height="15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path stroke="#fff" d="M.5 0v15M16.5 0v15M17 .5H0M17 14.5H0"/>
+                                        </svg>
+                                    </div>
+                                    <div class="col-auto p-0">
+                                        <div class="row">
+                                            <div class="col">W :</div>
+                                            <div id="canvasInfoWidth" class="col ps-1">0000px</div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col">H :</div>
+                                            <div id="canvasInfoHeight" class="col ps-1">0000px</div>
+                                        </div>
+                                    </div>
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="pt-3 w-50">
+                        <div class="mb-3">
+                            <label for="canvasZoom" class="form-label fs-sm">Zoom</label>
+                            <div class="input-group">
+                                <button class="btn btn-outline-secondary" id="canvasIncreaseZoom" type="button"> +
+                                </button>
+                                <input disabled id="canvasZoom" type="text" class="form-control text-center">
+                                <button class="btn btn-outline-secondary" id="canvasDecreaseZoom" type="button"> -
+                                </button>
                             </div>
                         </div>
                     </div>
