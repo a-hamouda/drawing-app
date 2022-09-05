@@ -1,14 +1,29 @@
-//a tool for drawing straight lines to the screen. Allows the user to preview
-//the line to the current mouse position before drawing the line to the
-//pixel array.
+/**
+ * A tool for drawing straight lines to the screen. Allows the user to preview
+ * the line to the current mouse position before drawing the line to the
+ * pixel array.
+ */
 class LineToTool extends ToolWithOptions {
+    /**
+     * x-pos of the mouse.
+     *
+     * @type {number}
+     */
     #startMouseX = -1;
+    /**
+     * y-pos of the mouse.
+     * @type {number}
+     */
     #startMouseY = -1;
     /**
+     * Line color.
+     *
      * @type string
      */
     #strokeColor;
     /**
+     * Line weight.
+     *
      * @type number
      */
     #strokeWeight;
@@ -18,7 +33,7 @@ class LineToTool extends ToolWithOptions {
         this.icon = "assets/icons/line-tool.svg";
         this.name = "LineTo";
         this.options.push(new ColorPicker(this.name, "Line Color", this.#onStrokeColorChanged.bind(this)));
-        this.options.push(new StrokeWeight(this.name, "Line Weight", this.#onStrokeWeightChanged.bind(this)))
+        this.options.push(new StrokeWeight(this.name, "Line Weight", this.#onStrokeWeightChanged.bind(this)));
     }
 
     onDrawStart() {
@@ -49,10 +64,20 @@ class LineToTool extends ToolWithOptions {
         super.onDrawEnd();
     }
 
+    /**
+     * Override line color.
+     *
+     * @param color
+     */
     #onStrokeColorChanged(color) {
         this.#strokeColor = color;
     }
 
+    /**
+     * Override line weight.
+     *
+     * @param weight
+     */
     #onStrokeWeightChanged(weight) {
         this.#strokeWeight = weight;
     }
