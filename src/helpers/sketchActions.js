@@ -1,6 +1,16 @@
+/**
+ * Sketch Actions configurator.
+ */
 class SketchActions {
+    /**
+     * Zoom factor of the canvas.
+     *
+     * @type {number}
+     */
     #zoomFactor = 1;
     /**
+     * Callback to execute when zoom changes.
+     *
      * @type {function(number)}
      */
     #onZoomChanged;
@@ -14,6 +24,9 @@ class SketchActions {
         this.#setupZoomHandlers();
     }
 
+    /**
+     * Configure actions html elements.
+     */
     #setupActionList() {
         $('#saveImageAction').on('click', () => {
             const sketchName = $("#sketchTitle").text();
@@ -33,6 +46,9 @@ class SketchActions {
         });
     }
 
+    /**
+     * Setup actions html elements handlers.
+     */
     #setupZoomHandlers() {
         this.#updateZoom();
 
@@ -49,6 +65,9 @@ class SketchActions {
         });
     }
 
+    /**
+     * Apply zoom updates to canvas and call zoom callback.
+     */
     #updateZoom() {
         $(`#canvasZoom`).val(this.#zoomFactor + "x");
         const canvasContainer = $(`#canvasContainer`);
