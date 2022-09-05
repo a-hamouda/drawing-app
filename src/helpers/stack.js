@@ -1,4 +1,4 @@
-class Node {
+class DataStructureNode {
     constructor(data, next = null) {
         this.data = data;
         this.next = next;
@@ -13,7 +13,7 @@ class Stack {
     }
     //Adds element to the beginning of the list. similar to Array.unShift()
     add(data) {
-        const newNode = new Node(data);
+        const newNode = new DataStructureNode(data);
         if (!this.first) {
             this.last = newNode;
             this.first = newNode;
