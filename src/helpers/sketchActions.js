@@ -17,6 +17,7 @@ class SketchActions {
     #setupActionList() {
         $('#saveImageAction').on('click', () => {
             const sketchName = $("#sketchTitle").text();
+            this.toolbox.selectedTool.onUnselected();
             this.canvas.saveCanvas(sketchName, "jpg");
         });
 
