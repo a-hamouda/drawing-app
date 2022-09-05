@@ -1,15 +1,33 @@
+/**
+ * Eraser too. Resets pixels of the canvas.
+ */
 class Eraser extends ToolWithOptions {
     /**
+     * Background color of the canvas.
+     *
      * @type {string}
      */
     #backgroundColor;
     /**
+     * Size of the eraser.
      *
      * @type {number}
      */
     #size;
+    /**
+     * Previous x-pos of the mouse.
+     *
+     * @type {number}
+     */
     #previousMouseX = -1;
+    /**
+     * Previous y-pos of the mouse.
+     * @type {number}
+     */
     #previousMouseY = -1;
+    /**
+     * Layer to which the eraser guide is drawn.
+     */
     #eraserLayer;
 
     constructor(canvas, canvasHistory, backgroundColor) {
@@ -47,17 +65,25 @@ class Eraser extends ToolWithOptions {
         super.onDrawEnd();
     }
 
+    /**
+     * Override the size of eraser.
+     *
+     * @param size
+     */
     #onSizeChanged(size) {
         this.#size = size;
     }
 
+    /**
+     * Draw the eraser guide on a separate layer.
+     */
     #drawEraserGuide() {
         const mouse = this.canvas.normalizedMouse();
         this.#eraserLayer = this.canvas.createGraphics(this.#size, this.#size);
         this.#eraserLayer.push();
         this.#eraserLayer.stroke("red");
         this.#eraserLayer.ellipseMode(this.#eraserLayer.CENTER);
-        this.#eraserLayer.circle(this.#size/ 2, this.#size / 2, this.#size * 0.99);
+        this.#eraserLayer.circle(this.#size / 2, this.#size / 2, this.#size * 0.99);
         this.#eraserLayer.pop();
         this.canvas.image(this.#eraserLayer, mouse.x - this.#size / 2, mouse.y - this.#size / 2);
     }
