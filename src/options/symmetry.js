@@ -1,13 +1,19 @@
+/**
+ * Mirror drawing tool Symmetry configurator.
+ */
 class Symmetry extends ToolOption {
     /**
+     * Axis of symmetry line.
+     *
      * @type {"x" | "y"}
      */
     #axis;
-    /**
-     * @type {function("x" | "y")}
-     */
-    #onChanged;
 
+    /**
+     * HTML structure of the option's elements.
+     *
+     * @type {string}
+     */
     #html = `
 <fieldset id="${this.id}" class="form-group border rounded-1 p-3" style="display: none">
     <legend class="float-none w-auto ps-2 pe-2 fs-6">${this.optionTitle}</legend>
@@ -22,26 +28,28 @@ class Symmetry extends ToolOption {
 `;
 
     constructor(toolId, optionTitle, onChanged) {
-        super(toolId, optionTitle);
+        super(toolId, optionTitle, onChanged);
         this.#axis = "x";
-        this.#onChanged = onChanged;
         const properties = $(`#toolOptions`);
         properties.append(this.#html);
         this.#setToggleHandler();
-        this.#onChanged(this.#axis);
+        this.onChanged(this.#axis);
     }
 
+    /**
+     * Setup toggle buttons handler.
+     */
     #setToggleHandler() {
         const verticalToggle = $("#" + this.toolId + "VerticalToggle");
         verticalToggle.on("click", () => {
             this.#axis = "x";
-            this.#onChanged(this.#axis);
+            this.onChanged(this.#axis);
         });
 
         const horizontalToggle = $("#" + this.toolId + "HorizontalToggle");
         horizontalToggle.on("click", () => {
             this.#axis = "y";
-            this.#onChanged(this.#axis);
+            this.onChanged(this.#axis);
         });
     }
 }
