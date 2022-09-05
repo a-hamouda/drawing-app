@@ -1,27 +1,53 @@
+/**
+ * Main drawing sketch.
+ *
+ * Used in instance mode to avoid problems and confusion when mixing with other
+ * libraries.
+ *
+ * Read more about global vs instance modes here:
+ *  https://github.com/processing/p5.js/wiki/Global-and-instance-mode
+ *  https://p5js.org/reference/#/p5/p5
+ *
+ * @param {string} canvasColor - color of the canvas.
+ * @param {number} canvasWidth - width of the canvas.
+ * @param {number} canvasHeight - height of the canvas.
+ * @return {function(Object)} - sketch object function.
+ */
 const sketch = (canvasColor, canvasWidth, canvasHeight) => {
     /**
+     * Tools container.
+     *
      * @type {Toolbox}
      */
     let toolbox;
     /**
+     * Drawing history tracker.
+     *
      * @type {CanvasHistory}
      */
     let canvasHistory;
     /**
+     * Canvas zoom factor.
+     *
      * @type {number}
      */
     let zoomFactor;
 
     return (canvas) => {
+        /**
+         * P5 [setup] function.
+         */
         canvas.setup = () => {
             const mainCanvas = canvas.createCanvas(canvasWidth, canvasHeight);
             canvas.background(canvasColor);
-
+            // attach to html element.
             mainCanvas.parent("sketchCanvas");
 
-            //create a toolbox for storing the tools
+            // create a toolbox for storing the tools
             toolbox = new Toolbox(canvasColor);
+            // initialize sketch actions.
             new SketchActions(canvas, toolbox, canvasColor, canvas.updateZoomFactor);
+            // create canvas history tracker.
             canvasHistory = new CanvasHistory(canvas);
 
             //add the tools to the toolbox.
@@ -32,24 +58,45 @@ const sketch = (canvasColor, canvasWidth, canvasHeight) => {
             toolbox.addTool(new Eraser(canvas, canvasHistory, canvasColor));
         };
 
+        /**
+         * P5 [mouseMoved] function.
+         */
         canvas.mouseMoved = () => canvas.trackMouseRelativeToCanvas();
 
+        /**
+         * P5 [mouseDragged] function.
+         */
         canvas.mouseDragged = () => {
             canvas.trackMouseRelativeToCanvas();
+            // only draw if mouse is over canvas.
             if (canvas.isMouseOverCanvas()) toolbox.selectedTool.onDrawStart();
         };
 
+        /**
+         * P5 [mouseReleased] function.
+         */
         canvas.mouseReleased = () => {
+            // finalize drawing if mouse is over canvas.
             if (canvas.isMouseOverCanvas()) toolbox.selectedTool.onDrawEnd();
         };
 
+        /**
+         * Used as a callback to notify this instance about zoom changes.
+         *
+         * @param {number} factor
+         */
         canvas.updateZoomFactor = (factor) => {
             zoomFactor = factor;
         };
 
         /**
+         * Calculate the effective position of the mouse relative to the zoomed canvas.
          *
-         * @return {{x: number, y: number}}
+         * Example:
+         *  Given a 10 x 10 canvas, if user zooms the canvas by a factor of 2x,
+         *  pointing to cell (10, 10) on the zoomed canvas should also point to cell (5, 5) on the normal canvas.
+         *
+         * @return {{x: number, y: number}} - normalized mouse position relative to the zoomed canvas.
          */
         canvas.normalizedMouse = () => {
             const mouseX = canvas.mouseX;
@@ -59,6 +106,11 @@ const sketch = (canvasColor, canvasWidth, canvasHeight) => {
             return {x: normalizedX, y: normalizedY};
         };
 
+        /**
+         * Check if mouse is currently on canvas.
+         *
+         * @return {boolean} - mouse is on canvas.
+         */
         canvas.isMouseOverCanvas = () => {
             const mouse = canvas.normalizedMouse();
             const width = canvas.width;
@@ -68,24 +120,26 @@ const sketch = (canvasColor, canvasWidth, canvasHeight) => {
             return !(mouse.y < 0 || mouse.y > height);
         };
 
+        /**
+         * Track mouse and update canvas info pane.
+         */
         canvas.trackMouseRelativeToCanvas = () => {
-            const dx = canvas.normalizedMouse().x;
+            const mouse = canvas.normalizedMouse();
             const width = canvas.width;
-            const dy = canvas.normalizedMouse().y;
             const height = canvas.height;
             const dxText = $(`#canvasInfoMouseX`);
             const dyText = $(`#canvasInfoMouseY`);
 
-            if (dx > width) {
-                dxText.text("+" + Math.round(dx - width) + "px");
+            if (mouse.x > width) {
+                dxText.text("+" + Math.round(mouse.x - width) + "px");
             } else {
-                dxText.text(Math.round(dx) + "px");
+                dxText.text(Math.round(mouse.x) + "px");
             }
 
-            if (dy > height) {
-                dyText.text("+" + Math.round(dy - height) + "px");
+            if (mouse.y > height) {
+                dyText.text("+" + Math.round(mouse.y - height) + "px");
             } else {
-                dyText.text(Math.round(dy) + "px");
+                dyText.text(Math.round(mouse.y) + "px");
             }
         };
     };
