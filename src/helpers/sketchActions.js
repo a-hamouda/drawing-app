@@ -19,9 +19,9 @@ class SketchActions {
             const sketchName = $("#sketchTitle").text();
             const selectedTool = this.toolbox.selectedTool;
             if (selectedTool instanceof ToolWithOptions) {
-                this.toolbox.selectedTool.onUnselected(false);
+                selectedTool.onUnselected(false);
             } else {
-                this.toolbox.selectedTool.onUnselected();
+                selectedTool.onUnselected();
             }
             this.canvas.saveCanvas(sketchName, "jpg");
         });

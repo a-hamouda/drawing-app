@@ -7,6 +7,10 @@ class MirrorDrawTool extends ToolWithOptions {
      * @type number
      */
     #strokeWeight;
+    /**
+     * @type {"x", "y"}
+     */
+    #axis;
     //where was the mouse on the last time draw was called.
     //set it to -1 to begin with
     #previousMouseX = -1;
@@ -21,11 +25,10 @@ class MirrorDrawTool extends ToolWithOptions {
         super(canvas, canvasHistory);
         this.name = "mirrorDraw";
         this.icon = "assets/icons/mirror-tool.svg";
-        this.options.push(new ColorPicker(this.name,"Pen Color", this.#onStrokeColorChanged.bind(this)));
-        this.options.push(new StrokeWeight(this.name,"Stroke Weight", this.#onStrokeWeightChanged.bind(this)));
+        this.options.push(new ColorPicker(this.name, "Pen Color", this.#onStrokeColorChanged.bind(this)));
+        this.options.push(new StrokeWeight(this.name, "Stroke Weight", this.#onStrokeWeightChanged.bind(this)));
+        this.options.push(new Symmetry(this.name, "Symmetric drawing", this.#onAxisChanged.bind(this)));
 
-        //which axis is being mirrored (x or y) x is default
-        this.axis = "x";
         //line of symmetry is halfway across the screen
         this.lineOfSymmetry = this.canvas.width / 2;
     }
@@ -50,10 +53,6 @@ class MirrorDrawTool extends ToolWithOptions {
     onSelected() {
         super.onSelected();
         this.#drawLineOfSymmetry();
-    }
-
-    onUnselected() {
-        super.onUnselected();
     }
 
     onDrawStart() {
@@ -95,7 +94,7 @@ class MirrorDrawTool extends ToolWithOptions {
     }
 
     #drawLineOfSymmetry() {
-        if (this.axis === "x") {
+        if (this.#axis === "x") {
             this.#symmetryLineLayer = this.canvas.createGraphics(3, this.canvas.height);
             this.#symmetryLineLayer.background("red");
             this.canvas.image(this.#symmetryLineLayer, (this.canvas.width / 2) - (this.#symmetryLineLayer.width / 2), 0);
@@ -115,7 +114,7 @@ class MirrorDrawTool extends ToolWithOptions {
     calculateOpposite(n, a) {
         //if the axis isn't the one being mirrored return the same
         //value
-        if (a !== this.axis) {
+        if (a !== this.#axis) {
             return n;
         }
 
@@ -139,5 +138,21 @@ class MirrorDrawTool extends ToolWithOptions {
 
     #onStrokeWeightChanged(weight) {
         this.#strokeWeight = weight;
+    }
+
+    /**
+     *
+     * @param {"x" | "y"} axis
+     */
+    #onAxisChanged(axis) {
+        this.#axis = axis;
+        this.canvas.loadPixels();
+        if (axis === "x") {
+            this.lineOfSymmetry = this.canvas.width / 2;
+        } else {
+            this.lineOfSymmetry = this.canvas.height / 2;
+        }
+        this.#drawLineOfSymmetry();
+        this.canvas.updatePixels();
     }
 }
