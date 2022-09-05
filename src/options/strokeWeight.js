@@ -1,10 +1,19 @@
+/**
+ * Drawing tool Stroke weight configurator.
+ */
 class StrokeWeight extends ToolOption {
-    #weight = 1;
     /**
-     * @type {function(number)}
+     * Weight of the stroke.
+     *
+     * @type {number}
      */
-    #onChanged;
+    #weight = 1;
 
+    /**
+     * HTML structure of the option's elements.
+     *
+     * @type {string}
+     */
     #html = `
 <fieldset id="${this.id}" class="form-group border rounded-1 p-3" style="display: none">
     <legend class="float-none w-auto ps-2 pe-2 fs-6">${this.optionTitle}</legend>
@@ -16,21 +25,24 @@ class StrokeWeight extends ToolOption {
 `;
 
     constructor(toolId, optionTitle, onChanged) {
-        super(toolId, optionTitle);
-        this.#onChanged = onChanged;
+        super(toolId, optionTitle, onChanged);
+        this.onChanged = onChanged;
         const properties = $(`#toolOptions`);
         properties.append(this.#html);
         this.#setInputHandler();
-        this.#onChanged(this.#weight);
+        this.onChanged(this.#weight);
     }
 
+    /**
+     * Setup stroke weight input handler.
+     */
     #setInputHandler() {
         const input = $("#" + this.toolId + "StrokeWeightInput");
         input.on('input change', () => {
             const newValue = input.val();
             if (newValue.length === 0) input.val(0.1);
             this.#weight = newValue;
-            this.#onChanged(this.#weight);
+            this.onChanged(this.#weight);
         });
     }
 }
