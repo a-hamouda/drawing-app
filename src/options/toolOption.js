@@ -12,7 +12,7 @@ class ToolOption {
         /**
          * Callback to execute when option has new configuration.
          *
-         * @type function(string)
+         * @type function(*)
          */
         this.onChanged = onChanged;
     }

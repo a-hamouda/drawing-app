@@ -34,7 +34,6 @@ class Spray extends ToolOption {
 
     constructor(toolId, optionTitle, onChanged) {
         super(toolId, optionTitle, onChanged);
-        this.onChanged = onChanged;
         const properties = $(`#toolOptions`);
         properties.append(this.#html);
         this.#setInputHandlers();
