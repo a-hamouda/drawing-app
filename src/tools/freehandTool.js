@@ -1,15 +1,28 @@
+/**
+ * Freehand painting tool. A.K.A. Pen tool.
+ */
 class FreehandTool extends ToolWithOptions {
-    //to smoothly draw we'll draw a line from the previous mouse location
-    //to the current mouse location. The following values store
-    //the locations from the last frame. They are -1 to start with because
-    //we haven't started drawing yet.
+    /**
+     * Previous x-pos of the mouse.
+     *
+     * @type {number}
+     */
     #previousMouseX = -1;
+    /**
+     * Previous y-pos of the mouse.
+     *
+     * @type {number}
+     */
     #previousMouseY = -1;
     /**
+     * Color of the pen.
+     *
      * @type string
      */
     #strokeColor;
     /**
+     * Stroke weight.
+     *
      * @type number
      */
     #strokeWeight;
@@ -47,10 +60,20 @@ class FreehandTool extends ToolWithOptions {
         super.onDrawEnd();
     }
 
+    /**
+     * Override stroke weight.
+     *
+     * @param {number} weight
+     */
     #onStrokeWeightChanged(weight) {
         this.#strokeWeight = weight;
     }
 
+    /**
+     * Override pen color.
+     * 
+     * @param {string} color
+     */
     #onStrokeColorChanged(color) {
         this.#strokeColor = color;
     }
