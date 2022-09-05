@@ -29,6 +29,7 @@ const sketch = (canvasColor, canvasWidth, canvasHeight) => {
             toolbox.addTool(new LineToTool(canvas, canvasHistory));
             toolbox.addTool(new SprayCanTool(canvas, canvasHistory));
             toolbox.addTool(new MirrorDrawTool(canvas, canvasHistory));
+            toolbox.addTool(new Eraser(canvas, canvasHistory, canvasColor));
         };
 
         canvas.mouseMoved = () => canvas.trackMouseRelativeToCanvas();
