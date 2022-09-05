@@ -1,13 +1,19 @@
+/**
+ * Spray can particles configurator.
+ */
 class Spray extends ToolOption {
     /**
+     * Weight and spread of the particles.
+     *
      * @type {{weight: number, spread: number}}
      */
     #config = {weight: 15, spread: 12};
-    /**
-     * @type {function({weight: number, spread: number})}
-     */
-    #onChanged;
 
+    /**
+     * HTML structure of the option's elements.
+     *
+     * @type {string}
+     */
     #html = `
 <fieldset id="${this.id}" class="form-group border rounded-1 p-3" style="display: none">
     <legend class="float-none w-auto ps-2 pe-2 fs-6">${this.optionTitle}</legend>
@@ -26,22 +32,25 @@ class Spray extends ToolOption {
 </fieldset>
 `;
 
-    constructor(toolId,optionTitle, onChanged) {
-        super(toolId,optionTitle);
-        this.#onChanged = onChanged;
+    constructor(toolId, optionTitle, onChanged) {
+        super(toolId, optionTitle, onChanged);
+        this.onChanged = onChanged;
         const properties = $(`#toolOptions`);
         properties.append(this.#html);
         this.#setInputHandlers();
-        this.#onChanged(this.#config);
+        this.onChanged(this.#config);
     }
 
+    /**
+     * Setup particle inputs handles.
+     */
     #setInputHandlers() {
         const weightInput = $("#" + this.toolId + "SprayWeight");
         weightInput.on("input change", () => {
             const newValue = +weightInput.val();
             if (newValue.length <= 0 || newValue < 0.1) weightInput.val(0.1);
             this.#config.weight = newValue;
-            this.#onChanged(this.#config);
+            this.onChanged(this.#config);
         });
 
         const spreadInput = $("#" + this.toolId + "SpraySpread");
@@ -49,7 +58,7 @@ class Spray extends ToolOption {
             const newValue = +spreadInput.val();
             if (newValue.length <= 0 || newValue < 0.1) spreadInput.val(0.1);
             this.#config.spread = newValue;
-            this.#onChanged(this.#config);
+            this.onChanged(this.#config);
         });
     }
 }
