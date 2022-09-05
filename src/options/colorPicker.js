@@ -1,13 +1,31 @@
+/**
+ * Painting tool Color Picker.
+ */
 class ColorPicker extends ToolOption {
     /**
-     * @type function(string)
+     * Radius of the color wheel.
+     *
+     * @type {number}
      */
-    #onChanged;
-
     #wheelRadius = 75;
+    /**
+     * Current selected color in HEX.
+     *
+     * @type {string}
+     */
     #selectedColor = '#000';
+    /**
+     * Current selected color in RGBA format.
+     *
+     * @type {Uint8ClampedArray}
+     */
     #rgba = Uint8ClampedArray.from([0, 0, 0, 255]);
 
+    /**
+     * HTML structure of the option's elements.
+     *
+     * @type {string}
+     */
     #html = `
 <fieldset id="${this.id}" class="form-group border rounded-1 p-3" style="display: none">
     <legend class="float-none w-auto ps-2 pe-2 fs-6">${this.optionTitle}</legend>
@@ -44,8 +62,8 @@ class ColorPicker extends ToolOption {
 `;
 
     constructor(toolId, optionTitle, onChanged) {
-        super(toolId, optionTitle);
-        this.#onChanged = onChanged;
+        super(toolId, optionTitle, onChanged);
+        this.onChanged = onChanged;
         const properties = $(`#toolOptions`);
         properties.append(this.#html);
 
@@ -56,9 +74,12 @@ class ColorPicker extends ToolOption {
         this.#setColorSelectHandler();
         this.#setOnColorWheelHoverHandler();
         this.#setRGBAInputHandlers();
-        this.#onChanged(this.#selectedColor);
+        this.onChanged(this.#selectedColor);
     }
 
+    /**
+     * Setup mouse on color wheel handler. Changes cursor and temporary preview color.
+     */
     #setOnColorWheelHoverHandler() {
         const canvas = $("#" + this.toolId + "ColorPickerCanvas");
         canvas.on("mousemove", (event) => {
@@ -77,6 +98,9 @@ class ColorPicker extends ToolOption {
         });
     }
 
+    /**
+     * Setup selected color handler. Changes both preview, and temporary preview colors.
+     */
     #setColorSelectHandler() {
         const canvas = $("#" + this.toolId + "ColorPickerCanvas");
         canvas.on('click', (event) => {
@@ -90,10 +114,13 @@ class ColorPicker extends ToolOption {
         });
     }
 
+    /**
+     * Setup input fields handlers.
+     */
     #setRGBAInputHandlers() {
         const redInput = $("#" + this.toolId + "ColorPickerRedInput");
         redInput.on('input change', () => {
-            const newValue = redInput.val();
+            const newValue = +redInput.val();
             if (newValue.length === 0) redInput.val(0);
             if (newValue < 0 || newValue > 255) return;
             this.#rgba[0] = newValue;
@@ -105,7 +132,7 @@ class ColorPicker extends ToolOption {
             const newValue = greenInput.val();
             if (newValue.length === 0) greenInput.val(0);
             if (newValue < 0 || newValue > 255) return;
-            this.#rgba[1] = newValue;
+            this.#rgba[1] = +newValue;
             this.#updateColor();
         });
 
@@ -114,7 +141,7 @@ class ColorPicker extends ToolOption {
             const newValue = blueInput.val();
             if (newValue.length === 0) blueInput.val(0);
             if (newValue < 0 || newValue > 255) return;
-            this.#rgba[2] = newValue;
+            this.#rgba[2] = +newValue;
             this.#updateColor();
         });
 
@@ -123,18 +150,27 @@ class ColorPicker extends ToolOption {
             const newValue = alphaInput.val();
             if (newValue.length === 0) alphaInput.val(0);
             if (newValue < 0 || newValue > 255) return;
-            this.#rgba[3] = newValue;
+            this.#rgba[3] = +newValue;
             this.#updateColor();
         });
     }
 
+    /**
+     * Update current selected color and executes callback to notify about color changes.
+     */
     #updateColor() {
         this.#selectedColor = ColorPicker.#RGBAToHexA(this.#rgba);
         $("#" + this.toolId + "ColorPickerPreview").css("background-color", `${this.#selectedColor}`);
         $("#" + this.toolId + "ColorPickerTempPreview").css("background-color", `${this.#selectedColor}`);
-        this.#onChanged(this.#selectedColor);
+        this.onChanged(this.#selectedColor);
     }
 
+    /**
+     * Check mouse is on color wheel.
+     *
+     * @param {MouseEvent} event - mouse event.
+     * @return {boolean} - mouse is on color wheel.
+     */
     #isOverColorWheel(event) {
         const canvas = $("#" + this.toolId + "ColorPickerCanvas");
         const mouseX = event.pageX;
@@ -144,6 +180,12 @@ class ColorPicker extends ToolOption {
         return Math.sqrt(Math.pow((wheelCenterX - mouseX), 2) + Math.pow((wheelCenterY - mouseY), 2)) < this.#wheelRadius;
     }
 
+    /**
+     * Get color of the pixel under the mouse pointer.
+     *
+     * @param {MouseEvent} event - mouse event.
+     * @return {Uint8ClampedArray} - color in RGBA format.
+     */
     #getPointedColor(event) {
         const canvas = $("#" + this.toolId + "ColorPickerCanvas");
         const context = canvas.get(0).getContext("2d");
@@ -155,7 +197,7 @@ class ColorPicker extends ToolOption {
     /**
      * Convert from list of rgba values to hex color.
      *
-     * @param {Uint8ClampedArray} rgba
+     * @param {Uint8ClampedArray} rgba - color in RGBA format.
      */
     static #RGBAToHexA(rgba) {
         let r = rgba[0].toString(16);
