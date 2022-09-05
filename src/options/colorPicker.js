@@ -103,7 +103,7 @@ class ColorPicker extends ToolOption {
     #setColorSelectHandler() {
         const canvas = $("#" + this.toolId + "ColorPickerCanvas");
         canvas.on('click', (event) => {
-            if (!this.#isOverColorWheel(event, canvas)) return;
+            if (!this.#isOverColorWheel(event)) return;
             this.#rgba = this.#getPointedColor(event);
             $("#" + this.toolId + "ColorPickerRedInput").val(this.#rgba[0]);
             $("#" + this.toolId + "ColorPickerGreenInput").val(this.#rgba[1]);
