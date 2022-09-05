@@ -1,9 +1,12 @@
+/**
+ * Abstract class for Tool Options.
+ */
 class ToolOption {
     /**
      *
-     * @param {string} toolId
-     * @param {string} optionTitle
-     * @param onChanged
+     * @param {string} toolId - id of the tool.
+     * @param {string} optionTitle - title of the option.
+     * @param onChanged - callback for when the option was reconfigured.
      */
     constructor(toolId, optionTitle, onChanged) {
         if (this.constructor === ToolOption) throw new Error("Cannot instantiate abstract classes");
@@ -17,16 +20,27 @@ class ToolOption {
         this.onChanged = onChanged;
     }
 
+    /**
+     * ID of the option.
+     * 
+     * @return {string}
+     */
     get id() {
         const normalizedToolId = this.toolId.replaceAll(" ", "");
         const normalizedOptionTitle = this.optionTitle.replaceAll(" ", "");
         return normalizedToolId + normalizedOptionTitle;
     };
 
+    /**
+     * Show the option.
+     */
     show() {
         $('#' + this.id).show();
     }
 
+    /**
+     * Hide the option.
+     */
     hide() {
         $('#' + this.id).hide();
     }
