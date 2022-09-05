@@ -18,8 +18,8 @@ class FreehandTool extends ToolWithOptions {
         super(canvas, canvasHistory);
         this.icon = "assets/icons/free-hand.svg";
         this.name = "freehand";
-        this.options.push(new ColorPicker(this.name, this.#onStrokeColorChanged.bind(this)));
-        this.options.push(new StrokeWeight(this.name, this.#onStrokeWeightChanged.bind(this)));
+        this.options.push(new ColorPicker(this.name, "Pen Color", this.#onStrokeColorChanged.bind(this)));
+        this.options.push(new StrokeWeight(this.name, "Stroke Weight", this.#onStrokeWeightChanged.bind(this)));
     }
 
     onDrawStart() {

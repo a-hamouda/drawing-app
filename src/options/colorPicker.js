@@ -9,8 +9,8 @@ class ColorPicker extends ToolOption {
     #rgba = Uint8ClampedArray.from([0, 0, 0, 255]);
 
     #html = `
-<fieldset id="${this.toolId}${this.name}" class="form-group border rounded-1 p-3" style="display: none">
-    <legend class="float-none w-auto ps-2 pe-2 fs-6">Stroke Color</legend>
+<fieldset id="${this.id}" class="form-group border rounded-1 p-3" style="display: none">
+    <legend class="float-none w-auto ps-2 pe-2 fs-6">${this.optionTitle}</legend>
     <div class="row">
         <div class="col">
             <div class="input-group">
@@ -43,8 +43,8 @@ class ColorPicker extends ToolOption {
 </fieldset>
 `;
 
-    constructor(toolId, onChanged) {
-        super(toolId, "ColorPicker");
+    constructor(toolId, optionTitle, onChanged) {
+        super(toolId, optionTitle);
         this.#onChanged = onChanged;
         const properties = $(`#toolOptions`);
         properties.append(this.#html);

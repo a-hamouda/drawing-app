@@ -1,15 +1,26 @@
 class ToolOption {
-    constructor(toolId, name) {
+    /**
+     *
+     * @param {string} toolId
+     * @param {string} optionTitle
+     */
+    constructor(toolId, optionTitle) {
         if (this.constructor === ToolOption) throw new Error("Cannot instantiate abstract classes");
         this.toolId = toolId;
-        this.name = name;
+        this.optionTitle = optionTitle;
     }
 
+    get id() {
+        const normalizedToolId = this.toolId.replaceAll(" ", "");
+        const normalizedOptionTitle = this.optionTitle.replaceAll(" ", "");
+        return normalizedToolId + normalizedOptionTitle;
+    };
+
     show() {
-        $('#' + this.toolId + this.name).show();
+        $('#' + this.id).show();
     }
 
     hide() {
-        $('#' + this.toolId + this.name).hide();
+        $('#' + this.id).hide();
     }
 }

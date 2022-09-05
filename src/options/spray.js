@@ -9,8 +9,8 @@ class Spray extends ToolOption {
     #onChanged;
 
     #html = `
-<fieldset id="${this.toolId}${this.name}" class="form-group border rounded-1 p-3" style="display: none">
-    <legend class="float-none w-auto ps-2 pe-2 fs-6">Spray</legend>
+<fieldset id="${this.id}" class="form-group border rounded-1 p-3" style="display: none">
+    <legend class="float-none w-auto ps-2 pe-2 fs-6">${this.optionTitle}</legend>
     <div class="row">
         <div class="row-cols-auto input-group">
             <span class="input-group-text border-dark" style="width: 25%"><p class="m-auto">Weight</p></span>
@@ -26,8 +26,8 @@ class Spray extends ToolOption {
 </fieldset>
 `;
 
-    constructor(toolId, onChanged) {
-        super(toolId, "Spray");
+    constructor(toolId,optionTitle, onChanged) {
+        super(toolId,optionTitle);
         this.#onChanged = onChanged;
         const properties = $(`#toolOptions`);
         properties.append(this.#html);

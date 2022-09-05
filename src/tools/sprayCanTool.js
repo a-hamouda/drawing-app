@@ -16,8 +16,8 @@ class SprayCanTool extends ToolWithOptions {
         super(canvas, canvasHistory);
         this.name = "sprayCanTool";
         this.icon = "assets/icons/spray-tool.svg";
-        this.options.push(new ColorPicker(this.name, this.#onStrokeColorChanged.bind(this)));
-        this.options.push(new Spray(this.name, this.#onConfigChanged.bind(this)));
+        this.options.push(new ColorPicker(this.name,"Spray Color", this.#onStrokeColorChanged.bind(this)));
+        this.options.push(new Spray(this.name,"Particles", this.#onConfigChanged.bind(this)));
     }
 
     onDrawStart() {

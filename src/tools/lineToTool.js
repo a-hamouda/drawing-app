@@ -17,8 +17,8 @@ class LineToTool extends ToolWithOptions {
         super(canvas, canvasHistory);
         this.icon = "assets/icons/line-tool.svg";
         this.name = "LineTo";
-        this.options.push(new ColorPicker(this.name, this.#onStrokeColorChanged.bind(this)));
-        this.options.push(new StrokeWeight(this.name, this.#onStrokeWeightChanged.bind(this)))
+        this.options.push(new ColorPicker(this.name, "Line Color", this.#onStrokeColorChanged.bind(this)));
+        this.options.push(new StrokeWeight(this.name, "Line Weight", this.#onStrokeWeightChanged.bind(this)))
     }
 
     onDrawStart() {
