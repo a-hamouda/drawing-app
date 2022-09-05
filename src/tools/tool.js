@@ -89,10 +89,12 @@ class ToolWithOptions extends Tool {
         }
     }
 
-    onUnselected() {
+    onUnselected(hideOptions = true) {
         super.onUnselected();
-        for (const option of this.options) {
-            option.hide();
+        if (hideOptions) {
+            for (const option of this.options) {
+                option.hide();
+            }
         }
     }
 }

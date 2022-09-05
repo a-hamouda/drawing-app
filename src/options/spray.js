@@ -38,17 +38,17 @@ class Spray extends ToolOption {
     #setInputHandlers() {
         const weightInput = $("#" + this.toolId + "SprayWeight");
         weightInput.on("input change", () => {
-            const newValue = weightInput.val();
-            if (newValue.length === 0 || newValue < 0.1) weightInput.val(0.1);
+            const newValue = +weightInput.val();
+            if (newValue.length <= 0 || newValue < 0.1) weightInput.val(0.1);
             this.#config.weight = newValue;
             this.#onChanged(this.#config);
         });
 
         const spreadInput = $("#" + this.toolId + "SpraySpread");
         spreadInput.on("input change", () => {
-            const newValue = spreadInput.val();
-            if (newValue.length === 0 || newValue < 0.1) weightInput.val(0.1);
-            this.#config.weight = newValue;
+            const newValue = +spreadInput.val();
+            if (newValue.length <= 0 || newValue < 0.1) spreadInput.val(0.1);
+            this.#config.spread = newValue;
             this.#onChanged(this.#config);
         });
     }
