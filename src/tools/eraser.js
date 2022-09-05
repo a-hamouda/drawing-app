@@ -26,7 +26,7 @@ class Eraser extends ToolWithOptions {
      */
     #previousMouseY = -1;
     /**
-     * Layer to which the eraser guide is drawn.
+     * Layer to which the eraser guide is drew.
      */
     #eraserLayer;
 

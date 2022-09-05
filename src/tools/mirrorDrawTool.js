@@ -1,24 +1,51 @@
+/**
+ * Symmetric drawing tool.
+ */
 class MirrorDrawTool extends ToolWithOptions {
     /**
+     * Pen color.
+     *
      * @type string
      */
     #strokeColor;
     /**
+     * Stroke weight.
+     *
      * @type number
      */
     #strokeWeight;
     /**
+     * Symmetry axis.
+     *
      * @type {"x", "y"}
      */
     #axis;
-    //where was the mouse on the last time draw was called.
-    //set it to -1 to begin with
+    /**
+     * Previous x-pos of the mouse.
+     * @type {number}
+     */
     #previousMouseX = -1;
+    /**
+     * Previous y-pos of the mouse.
+     *
+     * @type {number}
+     */
     #previousMouseY = -1;
-
-    //mouse coordinates for the other side of the Line of symmetry.
+    /**
+     * Previous x-pos of the mouse on the opposite side.
+     *
+     * @type {number}
+     */
     #previousOppositeMouseX = -1;
+    /**
+     * Previous y-pos of the mouse on the opposite side.
+     *
+     * @type {number}
+     */
     #previousOppositeMouseY = -1;
+    /**
+     * Layer to which the symmetry line guide is drew.
+     */
     #symmetryLineLayer;
 
     constructor(canvas, canvasHistory) {
@@ -28,27 +55,7 @@ class MirrorDrawTool extends ToolWithOptions {
         this.options.push(new ColorPicker(this.name, "Pen Color", this.#onStrokeColorChanged.bind(this)));
         this.options.push(new StrokeWeight(this.name, "Stroke Weight", this.#onStrokeWeightChanged.bind(this)));
         this.options.push(new Symmetry(this.name, "Symmetric drawing", this.#onAxisChanged.bind(this)));
-
-        //line of symmetry is halfway across the screen
-        this.lineOfSymmetry = this.canvas.width / 2;
     }
-
-    // populateOptions() {
-    //     $(".options").html("<button id='directionButton'>Make Horizontal</button>");
-    //     // 	//click handler
-    //     $("#directionButton").on("click", function () {
-    //         const button = $("#" + this.elt.id);
-    //         if (self.axis === "x") {
-    //             self.axis = "y";
-    //             self.lineOfSymmetry = height / 2;
-    //             button.html('Make Vertical');
-    //         } else {
-    //             self.axis = "x";
-    //             self.lineOfSymmetry = width / 2;
-    //             button.html('Make Horizontal');
-    //         }
-    //     });
-    // }
 
     onSelected() {
         super.onSelected();
@@ -93,6 +100,9 @@ class MirrorDrawTool extends ToolWithOptions {
         super.onDrawEnd();
     }
 
+    /**
+     * Draw the symmetry line guide on a separate layer.
+     */
     #drawLineOfSymmetry() {
         if (this.#axis === "x") {
             this.#symmetryLineLayer = this.canvas.createGraphics(3, this.canvas.height);
@@ -105,11 +115,12 @@ class MirrorDrawTool extends ToolWithOptions {
         }
     }
 
-    /**calculate an opposite coordinate the other side of the
-     *symmetry line.
-     *@param n number: location for either x or y coordinate
-     *@param a [x,y]: the axis of the coordinate (y or y)
-     *@return number: the opposite coordinate
+    /**
+     * calculate an opposite coordinate the other side of the
+     * symmetry line.
+     * @param n number: location for either x or y coordinate
+     * @param a [x,y]: the axis of the coordinate (y or y)
+     * @return number: the opposite coordinate
      */
     calculateOpposite(n, a) {
         //if the axis isn't the one being mirrored return the same
@@ -132,17 +143,28 @@ class MirrorDrawTool extends ToolWithOptions {
         }
     }
 
+    /**
+     * Override pen color.
+     * 
+     * @param {string} color - color of the pen.
+     */
     #onStrokeColorChanged(color) {
         this.#strokeColor = color;
     }
 
+    /**
+     * Override stroke weight.
+     * 
+     * @param {number} weight - weight of the stroke.
+     */
     #onStrokeWeightChanged(weight) {
         this.#strokeWeight = weight;
     }
 
     /**
-     *
-     * @param {"x" | "y"} axis
+     * Update line of symmetry when axis is changed.
+     * 
+     * @param {"x" | "y"} axis - new axis.
      */
     #onAxisChanged(axis) {
         this.#axis = axis;
