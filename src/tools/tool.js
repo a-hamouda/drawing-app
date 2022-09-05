@@ -1,10 +1,48 @@
+/**
+ * Abstract class for drawing tools.
+ */
 class Tool {
+    /**
+     * Icon file path
+     *
+     * @type {string}
+     */
     icon;
+    /**
+     * Name of the tool.
+     *
+     * @type {string}
+     */
     name;
+    /**
+     * Drawing canvas.
+     *
+     * @type {Object}
+     */
     canvas;
+    /**
+     * Canvas pixels before applying changes by this tool.
+     *
+     * @type {Uint8ClampedArray}
+     */
     previousPixels;
+    /**
+     * History of the canvas.
+     *
+     * @type {CanvasHistory}
+     */
     canvasHistory;
+    /**
+     * Layer to draw to by this tool.
+     *
+     * @type {Object}
+     */
     drawingLayer;
+    /**
+     * Drawing layer has changes not applied to canvas.
+     *
+     * @type {boolean}
+     */
     hasChanges;
 
     constructor(canvas, canvasHistory) {
@@ -16,6 +54,9 @@ class Tool {
         this.canvasHistory.addListener(this);
     }
 
+    /**
+     * Lifecycle method. Called when tool is selected to set up drawing session.
+     */
     onSelected() {
         this.canvas.loadPixels();
         this.previousPixels = this.canvas.pixels;
@@ -24,6 +65,10 @@ class Tool {
         this.updateDrawingLayer();
     }
 
+    /**
+     * Lifecycle method. Called when tool is unselected to save any changes to canvas before
+     * ending drawing session.
+     */
     onUnselected() {
         let sessionHasData = false;
         this.drawingLayer.loadPixels();
@@ -41,9 +86,15 @@ class Tool {
         }
     };
 
+    /**
+     * Lifecycle method. Called when drawing by this tool begins.
+     */
     onDrawStart() {
     }
 
+    /**
+     * Lifecycle method. Called when drawing by this tool ends.
+     */
     onDrawEnd() {
         if (this.hasChanges) {
             this.drawingLayer.loadPixels();
@@ -52,16 +103,31 @@ class Tool {
         }
     }
 
+    /**
+     * Resets the drawing layer.
+     *
+     * @param {string} backgroundColor - color of the canvas.
+     */
     clearDrawingLayer(backgroundColor) {
         if (this.drawingLayer === undefined || this.drawingLayer === null) return;
         this.drawingLayer.background(backgroundColor);
     }
 
+    /**
+     * Write drawing layer changes to canvas.
+     *
+     * @param {boolean} loadDrawingLayerPixels - should load drawing layer's pixels array.
+     */
     updateCanvas(loadDrawingLayerPixels = true) {
         this.canvas.image(this.drawingLayer, 0, 0);
         this.updateDrawingLayer(loadDrawingLayerPixels);
     }
 
+    /**
+     * Write current canvas pixels to drawing layer.
+     *
+     * @param {boolean} loadDrawingLayerPixels - should load drawing layer's pixels array.
+     */
     updateDrawingLayer(loadDrawingLayerPixels = true) {
         if (loadDrawingLayerPixels) this.drawingLayer.loadPixels();
         this.previousPixels = this.drawingLayer.pixels;
@@ -69,8 +135,12 @@ class Tool {
     }
 }
 
+/**
+ * Abstract class for drawing tools with options.
+ */
 class ToolWithOptions extends Tool {
     /**
+     * Drawing tool options.
      *
      * @type {ToolOption[]}
      */
