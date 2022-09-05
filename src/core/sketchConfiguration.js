@@ -1,9 +1,11 @@
+/**
+ * Sketch setup. Responsible for setting up the canvas.
+ */
 class SketchConfiguration {
     /**
      * Create an instance of SketchConfiguration.
-     * SketchConfiguration is responsible for setting up the canvas.
      *
-     * @param {function(SketchConfiguration): void} onPopupDismissed
+     * @param {function(SketchConfiguration)} onPopupDismissed - callback when setup was successful.
      */
     constructor(onPopupDismissed) {
         this.#sketchName = 'Demo Sketch';
