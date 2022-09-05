@@ -17,7 +17,7 @@ class Spray extends ToolOption {
             <input class="form-control text-center border-dark" type="number" id="${this.toolId}SprayWeight" min=1 step=1 value=${this.#config.weight}>
             <span class="input-group-text border-dark">px</span>
         </div>
-        <div class="row-cols-auto input-group">
+        <div class="row-cols-auto input-group pt-1">
             <span class="input-group-text border-dark" style="width: 25%"><p class="m-auto">Spread</p></span>
             <input class="form-control text-center border-dark" type="number" id="${this.toolId}SpraySpread" min=1 step=1 value=${this.#config.spread}>
             <span class="input-group-text border-dark">px</span>
