@@ -30,7 +30,6 @@ class Tool {
         for (let i = 0; i < this.drawingLayer.pixels.length; i++) {
             if (this.drawingLayer.pixels[i] !== this.previousPixels[i]) {
                 sessionHasData = true;
-                console.log("data found");
                 break;
             }
         }

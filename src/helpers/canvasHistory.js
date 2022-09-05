@@ -45,7 +45,6 @@ class CanvasHistory {
     }
 
     add(snapshot) {
-        console.log("added new snapshot");
         this.undoStack.add(snapshot);
         CanvasHistory.#enableUndoButton(true);
     }
@@ -56,8 +55,6 @@ class CanvasHistory {
         this.#updateCanvas();
         this.#notifyListeners();
         if (this.undoStack.size <= 0) CanvasHistory.#enableUndoButton(false);
-        console.log("undo queue has: " + this.undoStack.size + " elements.");
-        console.log("redo queue has: " + this.redoStack.size + " elements.");
     }
 
     #redo() {
@@ -66,8 +63,6 @@ class CanvasHistory {
         this.#updateCanvas();
         this.#notifyListeners();
         if (this.redoStack.size <= 0) CanvasHistory.#enableRedoButtonState(false);
-        console.log("undo queue has: " + this.undoStack.size + " elements.");
-        console.log("redo queue has: " + this.redoStack.size + " elements.");
     }
 
     #updateCanvas() {
