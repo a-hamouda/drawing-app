@@ -10,6 +10,8 @@
 
 This Drawing App is a web-based painting application built as part of a University of London coursework project. It provides a comprehensive set of drawing tools that allow users to create digital artwork directly in their web browser. The application uses the **p5.js** library for canvas manipulation and provides a modern, intuitive interface for artists of all skill levels.
 
+Live demo: https://a-hamouda.github.io/drawing-app/
+
 ## Features
 
 ### Drawing Tools
